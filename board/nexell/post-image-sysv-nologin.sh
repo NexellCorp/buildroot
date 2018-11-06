@@ -1,9 +1,6 @@
 #!/bin/bash
 
-set -u
-set -e
-
-SKELETON_FS_DIR=board/nexell/fs
+source board/nexell/post-image.sh
 
 if [ -e ${TARGET_DIR}/etc/inittab ]; then
 	if ! grep -Eq "^BR2_INIT_SYSTEMD=y$" ${BR2_CONFIG}; then
