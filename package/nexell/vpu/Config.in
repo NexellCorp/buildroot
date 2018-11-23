@@ -1,0 +1,9 @@
+config BR2_PACKAGE_NEXELL_VPU
+	bool "VPU"
+	depends on BR2_PACKAGE_NXP3220
+	help
+	  Nexell VPU test applications
+
+if BR2_PACKAGE_NEXELL_VPU
+source "package/nexell/vpu/nexell_vpu_test/Config.in"
+endif

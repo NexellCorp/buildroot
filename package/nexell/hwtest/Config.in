@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HWTEST
+	bool "Hardware Test"
+	help
+	  Hardware Test applications
+
+if BR2_PACKAGE_HWTEST
+source "package/nexell/hwtest/hwtest-disk/Config.in"
+source "package/nexell/hwtest/hwtest-eth/Config.in"
+endif

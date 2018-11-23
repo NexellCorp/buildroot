@@ -1,0 +1,4 @@
+menu "Librararies"
+source "package/nexell/library/libnx_video_alloc/Config.in"
+source "package/nexell/library/libnx_video_api/Config.in"
+endmenu

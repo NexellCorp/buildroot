@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ASV_DEVFS_VPU
+	bool "vpu test"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBNX_VIDEO_ALLOC
+	select BR2_PACKAGE_LIBNX_VIDEO_API
+	help
+	  vpu test application for Dynamic Voltage and Frequency Scaling

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HWTEST_ETH
+	bool "eth"
+	help
+	  ethernet test application for hardware test

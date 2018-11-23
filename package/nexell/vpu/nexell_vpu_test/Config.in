@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NEXELL_VPU_TEST
+	bool "vpu test"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBNX_VIDEO_ALLOC
+	select BR2_PACKAGE_LIBNX_VIDEO_API
+	help
+	  Nexell vpu test application

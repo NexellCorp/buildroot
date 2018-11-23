@@ -1,0 +1,15 @@
+config BR2_PACKAGE_NEXELL
+	bool
+
+choice 
+	prompt "Nexell SoCs"
+
+config BR2_PACKAGE_NXP3220
+	bool "NXP3220"
+
+endchoice
+
+source "package/nexell/asv-devfs/Config.in"
+source "package/nexell/hwtest/Config.in"
+source "package/nexell/vpu/Config.in"
+source "package/nexell/library/Config.in"

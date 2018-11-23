@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HWTEST_DISK
+	bool "disk"
+	help
+	  disk test application for hardware test 

@@ -1,0 +1,42 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.69])
+AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+AC_CONFIG_SRCDIR([Makefile.am])
+AC_CONFIG_HEADERS([config.h])
+
+AM_INIT_AUTOMAKE([1.10 foreign dist-bzip2])
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-ldrm':
+AC_CHECK_LIB([drm], [main])
+
+# Checks for header files.
+AC_CHECK_HEADERS([fcntl.h stdint.h stdlib.h string.h strings.h sys/ioctl.h unistd.h])
+
+# Initialize libtool
+LT_PREREQ([2.2])
+LT_INIT([disable-static])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_INT32_T
+AC_TYPE_UINT32_T
+
+# Checks for library functions.
+AC_FUNC_MMAP
+AC_CHECK_FUNCS([memset munmap])
+
+AC_CONFIG_FILES([Makefile
+                 src/Makefile])
+AC_OUTPUT

@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ASV_DEVFS_OTG
+	bool "otg ums"
+	help
+	  otg configfs for usb mass stroage

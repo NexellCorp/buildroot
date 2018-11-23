@@ -1,0 +1,5 @@
+config BR2_PACKAGE_ASV_DEVFS_MAIN
+	bool "main"
+	select BR2_PACKAGE_JSON_C
+	help
+	  Main application for Dynamic Voltage and Frequency Scaling

@@ -1,0 +1,20 @@
+
+command:
+	- show target 
+		#> make show-targets
+
+	- target clean
+		#> make <target>-dirclean
+		: remove directory output/build/<target>
+
+	- target build
+		#> make <target>
+			or
+		#> make <target>-rebuild
+		: build in directory output/build/<target>
+
+
+1. Must be equal directory name and taget name
+
+	EX> if ASV_DEVFS_MAIN, set direcotry name is "asv_devfs_main" or
+	    "asv-devfs-main'
