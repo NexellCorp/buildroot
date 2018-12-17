@@ -1,0 +1,10 @@
+config BR2_PACKAGE_ASV_CPU_DVFS
+	bool "Adaptive Supply Voltage for DVFS"
+	depends on BR2_PACKAGE_NXP3220
+	help
+	  Adaptive Supply Voltage for Generic Dynamic Voltage and Frequency
+	  Scaling (DVFS)
+
+if BR2_PACKAGE_ASV_CPU_DVFS
+source "package/nexell/asv-cpu-dvfs/asv-cpu-dvfs-main/Config.in"
+endif

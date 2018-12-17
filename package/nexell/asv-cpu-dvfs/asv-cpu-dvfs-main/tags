@@ -1,0 +1,174 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ASVC_GET_ECID	asv_command.h	/^	ASVC_GET_ECID,$/;"	e	enum:__anon3
+ASVC_GET_HPM	asv_command.h	/^	ASVC_GET_HPM,		\/\/	Get HPM RO$/;"	e	enum:__anon3
+ASVC_GET_IDS	asv_command.h	/^	ASVC_GET_IDS,		\/\/	Get IDS$/;"	e	enum:__anon3
+ASVC_GET_TMU0	asv_command.h	/^	ASVC_GET_TMU0,		\/\/	Get TMU 0$/;"	e	enum:__anon3
+ASVC_GET_TMU1	asv_command.h	/^	ASVC_GET_TMU1,		\/\/	Get TMU 1$/;"	e	enum:__anon3
+ASVC_MAX	asv_command.h	/^	ASVC_MAX,$/;"	e	enum:__anon3
+ASVC_OFF	asv_command.h	/^	ASVC_OFF,		\/\/	PC Application Only$/;"	e	enum:__anon3
+ASVC_ON	asv_command.h	/^	ASVC_ON,		\/\/	PC Application Only$/;"	e	enum:__anon3
+ASVC_RUN	asv_command.h	/^	ASVC_RUN,$/;"	e	enum:__anon3
+ASVC_SET_FREQ	asv_command.h	/^	ASVC_SET_FREQ,$/;"	e	enum:__anon3
+ASVC_SET_VOLT	asv_command.h	/^	ASVC_SET_VOLT,$/;"	e	enum:__anon3
+ASVC_STATUS	asv_command.h	/^	ASVC_STATUS,$/;"	e	enum:__anon3
+ASVCommandToString	asv_command.c	/^const char *ASVCommandToString( ASV_COMMAND cmd )$/;"	f
+ASVM_3D	asv_command.h	/^	ASVM_3D,$/;"	e	enum:__anon4
+ASVM_CPU	asv_command.h	/^	ASVM_CPU,$/;"	e	enum:__anon4
+ASVM_LDO_SYS	asv_command.h	/^	ASVM_LDO_SYS,$/;"	e	enum:__anon4
+ASVM_MAX	asv_command.h	/^	ASVM_MAX,$/;"	e	enum:__anon4
+ASVM_VPU	asv_command.h	/^	ASVM_VPU,$/;"	e	enum:__anon4
+ASVModuleIDToString	asv_command.c	/^const char *ASVModuleIDToString(ASV_MODULE_ID id)$/;"	f
+ASVModuleIDToStringSimple	asv_command.c	/^const char *ASVModuleIDToStringSimple(ASV_MODULE_ID id)$/;"	f
+ASVStringModuleID	asv_command.c	/^ASV_MODULE_ID ASVStringModuleID( char *idStr)$/;"	f
+ASVStringToCommand	asv_command.c	/^ASV_COMMAND ASVStringToCommand( char *cmdStr )$/;"	f
+ASV_COMMAND	asv_command.h	/^}ASV_COMMAND;$/;"	t	typeref:enum:__anon3
+ASV_CPU_DVFS_MAIN_BUILD_CMDS	asv-cpu-dvfs-main.mk	/^define ASV_CPU_DVFS_MAIN_BUILD_CMDS$/;"	m
+ASV_CPU_DVFS_MAIN_INSTALL_TARGET_CMDS	asv-cpu-dvfs-main.mk	/^define ASV_CPU_DVFS_MAIN_INSTALL_TARGET_CMDS$/;"	m
+ASV_CPU_DVFS_MAIN_SITE	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_SITE = package\/nexell\/asv-cpu-dvfs\/asv-cpu-dvfs-main$/;"	m
+ASV_CPU_DVFS_MAIN_SITE_METHOD	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_SITE_METHOD = local$/;"	m
+ASV_CPU_DVFS_MAIN_TARGET_INIT	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_TARGET_INIT = S61cpufreq$/;"	m
+ASV_CPU_DVFS_MAIN_TARGET_NAME	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_TARGET_NAME = cpufreq$/;"	m
+ASV_CPU_DVFS_MAIN_TARGET_SHELL	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_TARGET_SHELL = *.sh$/;"	m
+ASV_CPU_DVFS_MAIN_VERSION	asv-cpu-dvfs-main.mk	/^ASV_CPU_DVFS_MAIN_VERSION = 0.0.1$/;"	m
+ASV_MODULE_ID	asv_command.h	/^}ASV_MODULE_ID;$/;"	t	typeref:enum:__anon4
+ASV_PARAM	asv_command.h	/^typedef union ASV_PARAM{$/;"	u
+ASV_PARAM	asv_command.h	/^}ASV_PARAM;$/;"	t	typeref:union:ASV_PARAM
+ASV_RESULT	asv_type.h	/^} ASV_RESULT;$/;"	t	typeref:enum:__anon1
+ASV_RES_ERR	asv_type.h	/^	ASV_RES_ERR     = -1,$/;"	e	enum:__anon1
+ASV_RES_OK	asv_type.h	/^	ASV_RES_OK      = 0,$/;"	e	enum:__anon1
+ASV_RES_TESTING	asv_type.h	/^	ASV_RES_TESTING = 1$/;"	e	enum:__anon1
+ASV_TEST_MODULE	asv_type.h	/^typedef struct ASV_TEST_MODULE$/;"	s
+ASV_TEST_MODULE	asv_type.h	/^} ASV_TEST_MODULE;$/;"	t	typeref:struct:ASV_TEST_MODULE
+CBOOL	asv_type.h	/^typedef S32	CBOOL;							\/\/\/< boolean type is 32bits signed integer$/;"	t
+CCPUTest	cpu_test.cpp	/^	CCPUTest(){}$/;"	f	class:CCPUTest
+CCPUTest	cpu_test.cpp	/^class CCPUTest$/;"	c	file:
+CFALSE	asv_type.h	88;"	d
+CPU_FREQ_FILE	dvfsutil.c	225;"	d	file:
+CPU_FREQ_FILE_PREFIX	dvfsutil.c	45;"	d	file:
+CPU_FREQ_GET_NAME	dvfsutil.c	380;"	d	file:
+CTRUE	asv_type.h	87;"	d
+CpuRun	cpu_test.cpp	/^static ASV_RESULT CpuRun(void)$/;"	f	file:
+CpuStatus	cpu_test.cpp	/^static ASV_RESULT CpuStatus(void)$/;"	f	file:
+CpuStop	cpu_test.cpp	/^static ASV_RESULT CpuStop(void)$/;"	f	file:
+CpuTestThread	cpu_test.cpp	/^void CCPUTest::CpuTestThread( int id )$/;"	f	class:CCPUTest
+CreateInstance	cpu_test.cpp	/^	static CCPUTest* CreateInstance(){$/;"	f	class:CCPUTest
+DBG_COMMAND	asv_test.c	40;"	d	file:
+ECID_FILE_NAME	dvfsutil.c	352;"	d	file:
+ENABLE_EMUL	asv_test.c	36;"	d	file:
+GetArgument	asv_command.c	/^int32_t GetArgument( char *pSrc, char arg[][MAX_CMD_STR] )$/;"	f
+GetCpuTestModule	cpu_test.cpp	/^extern "C" ASV_TEST_MODULE *GetCpuTestModule(void)$/;"	f
+GetECID	dvfsutil.c	/^int32_t GetECID( uint32_t ecid[4] )$/;"	f
+GetHPM	dvfsutil.c	/^int32_t GetHPM( uint32_t hpm[8] )$/;"	f
+GetIDS	dvfsutil.c	/^int32_t GetIDS( uint32_t ids[2] )$/;"	f
+GetTMU	dvfsutil.c	/^int32_t GetTMU( uint32_t channel, int *tmutemp )$/;"	f
+IDS_FILE_NAME	dvfsutil.c	296;"	d	file:
+MAX_CMD_ARG	asv_command.h	7;"	d
+MAX_CMD_STR	asv_command.h	6;"	d
+MAX_FILE_DATA	dvfsutil.c	39;"	d	file:
+MAX_FILE_PATH	dvfsutil.c	38;"	d	file:
+MAX_INPUT_SIZE	cpu_test.cpp	14;"	d	file:
+MAX_NUM_CPU_CORE	cpu_test.cpp	13;"	d	file:
+MAX_NUM_CPU_CORE	dvfsutil.c	41;"	d	file:
+MAX_STRING_SIZE	asv_test.c	37;"	d	file:
+MAX_TX_STRING	asv_test.c	38;"	d	file:
+MMAP_ALIGN	hwio.c	13;"	d	file:
+MMAP_DEVICE	hwio.c	14;"	d	file:
+MakeCommandString	asv_command.c	/^ASV_RESULT MakeCommandString( char *outBuf, int32_t outSize, ASV_COMMAND cmd, ASV_MODULE_ID id, ASV_PARAM param )$/;"	f
+NX_GetTickCountUs	dvfsutil.c	/^uint64_t NX_GetTickCountUs( void )$/;"	f
+NXatof	asv_command.c	/^double NXatof(char *str)$/;"	f
+PMIC_SYS_FILE_PREFIX	dvfsutil.c	50;"	d	file:
+PMIC_SYS_VOLTS_FILE	dvfsutil.c	51;"	d	file:
+ParseStringToCommand	asv_command.c	/^ASV_RESULT ParseStringToCommand( char *inBuf, int32_t intSize, ASV_COMMAND *cmd, ASV_MODULE_ID *id, ASV_PARAM *param )$/;"	f
+REGUL_ID_CORE	dvfsutil.h	/^	REGUL_ID_CORE   = 2,$/;"	e	enum:__anon2
+REGUL_ID_CPU	dvfsutil.h	/^	REGUL_ID_CPU    = 1,$/;"	e	enum:__anon2
+REGUL_ID_LDO_SYS	dvfsutil.h	/^	REGUL_ID_LDO_SYS	= 9,$/;"	e	enum:__anon2
+REGUL_ID_SYSTEM	dvfsutil.h	/^	REGUL_ID_SYSTEM = 3,$/;"	e	enum:__anon2
+REGUL_ID_TYPE	dvfsutil.h	/^}REGUL_ID_TYPE;$/;"	t	typeref:enum:__anon2
+RO_FILE_NAME	dvfsutil.c	324;"	d	file:
+RUN_TEST	asv_test.c	/^void RUN_TEST( int fd, ASV_MODULE_ID module )$/;"	f
+Run	cpu_test.cpp	/^ASV_RESULT CCPUTest::Run()$/;"	f	class:CCPUTest
+S16	asv_type.h	/^typedef short			S16;				\/\/\/< 16bit signed integer(s.15) value$/;"	t
+S16_MAX	asv_type.h	66;"	d
+S16_MIN	asv_type.h	65;"	d
+S32	asv_type.h	/^typedef int				S32;				\/\/\/< 32bit signed integer(s.31) value$/;"	t
+S32_MAX	asv_type.h	68;"	d
+S32_MIN	asv_type.h	67;"	d
+S8	asv_type.h	/^typedef char			S8;					\/\/\/< 8bit signed integer(s.7) value$/;"	t
+S8_MAX	asv_type.h	64;"	d
+S8_MIN	asv_type.h	63;"	d
+Set3DFrequency	dvfsutil.c	/^int32_t Set3DFrequency( uint32_t freq )$/;"	f
+SetCPUFrequency	dvfsutil.c	/^int32_t SetCPUFrequency( uint32_t freq )$/;"	f
+SetCPUVoltage	dvfsutil.c	/^int32_t SetCPUVoltage( uint32_t microVolt )			\/\/	CPU$/;"	f
+SetCoreVoltage	dvfsutil.c	/^int32_t SetCoreVoltage( uint32_t microVolt )		\/\/	MPEG\/3D$/;"	f
+SetRegulatorVoltage	dvfsutil.c	/^int32_t SetRegulatorVoltage( REGUL_ID_TYPE id, uint32_t microVolt )$/;"	f
+SetSystemLDOVoltage	dvfsutil.c	/^int32_t SetSystemLDOVoltage( uint32_t microVolt )		\/\/	LDO Number 4$/;"	f
+SetSystemVoltage	dvfsutil.c	/^int32_t SetSystemVoltage( uint32_t microVolt )		\/\/	System(3.3v)$/;"	f
+SetVPUFrequency	dvfsutil.c	/^int32_t SetVPUFrequency( uint32_t freq )$/;"	f
+Status	cpu_test.cpp	/^ASV_RESULT CCPUTest::Status()$/;"	f	class:CCPUTest
+Stop	cpu_test.cpp	/^ASV_RESULT CCPUTest::Stop()$/;"	f	class:CCPUTest
+TMU0_FILE_NAME	dvfsutil.c	381;"	d	file:
+TYPICAL_CPU_VOLT	cpu_test.cpp	239;"	d	file:
+ThreadStub	cpu_test.cpp	/^	static void *ThreadStub(void *pArg)$/;"	f	class:CCPUTest	file:
+U16	asv_type.h	/^typedef unsigned short	U16;				\/\/\/< 16bit unsigned integer value$/;"	t
+U16_MAX	asv_type.h	73;"	d
+U16_MIN	asv_type.h	72;"	d
+U32	asv_type.h	/^typedef unsigned int	U32;				\/\/\/< 32bit unsigned integer value$/;"	t
+U32_MAX	asv_type.h	75;"	d
+U32_MIN	asv_type.h	74;"	d
+U8	asv_type.h	/^typedef unsigned char	U8;					\/\/\/< 8bit unsigned integer value$/;"	t
+U8_MAX	asv_type.h	71;"	d
+U8_MIN	asv_type.h	70;"	d
+VPU_3D_FREQ_FILE	dvfsutil.c	54;"	d	file:
+_WriteSysInterface	dvfsutil.c	/^static int32_t _WriteSysInterface( const char *file, const char *buffer, int32_t bufSize )$/;"	f	file:
+__ASV_COMMAND_H__	asv_command.h	2;"	d
+__ASV_TYPE_H__	asv_type.h	2;"	d
+__DVFSUTIL_H__	dvfsutil.h	21;"	d
+asv_test_main	asv_test.c	/^int asv_test_main(void)$/;"	f
+disable_addr	hwio.c	/^unsigned long disable_addr[36] = {  0x27000420, 0x27000820, 0x27001a20, 0x27002220,                 $/;"	v
+f32	asv_command.h	/^	float		f32;$/;"	m	union:ASV_PARAM
+f64	asv_command.h	/^	double		f64;$/;"	m	union:ASV_PARAM
+gStrAsvCmdStr	asv_command.c	/^static const char *gStrAsvCmdStr[] = {$/;"	v	file:
+gStrAsvModuleIdStr	asv_command.c	/^static const char *gStrAsvModuleIdStr[] = {$/;"	v	file:
+gStrAsvModuleIdStrSimple	asv_command.c	/^static const char *gStrAsvModuleIdStrSimple[] = {$/;"	v	file:
+gstCpuTestModule	cpu_test.cpp	/^static ASV_TEST_MODULE gstCpuTestModule =$/;"	v	file:
+i32	asv_command.h	/^	int32_t		i32;$/;"	m	union:ASV_PARAM
+i64	asv_command.h	/^	int64_t		i64;$/;"	m	union:ASV_PARAM
+int16_t	asv_type.h	/^typedef signed short		int16_t;$/;"	t
+int32_t	asv_type.h	/^typedef signed int			int32_t;$/;"	t
+int64_t	asv_type.h	/^typedef __int64				int64_t;$/;"	t
+int8_t	asv_type.h	/^typedef signed char			int8_t;$/;"	t
+iomem_free	hwio.c	/^static void iomem_free(void *virt, unsigned long len)$/;"	f	file:
+iomem_map	hwio.c	/^static void *iomem_map(unsigned long phys, unsigned long len, unsigned long *map_phys)$/;"	f	file:
+m_Result	cpu_test.cpp	/^	ASV_RESULT		m_Result[MAX_NUM_CPU_CORE];$/;"	m	class:CCPUTest	file:
+m_ThreadNum	cpu_test.cpp	/^	int32_t			m_ThreadNum;$/;"	m	class:CCPUTest	file:
+m_bExitThread	cpu_test.cpp	/^	bool	m_bExitThread;$/;"	m	class:CCPUTest	file:
+m_gstInstance	cpu_test.cpp	/^	static CCPUTest *m_gstInstance;$/;"	m	class:CCPUTest	file:
+m_gstInstance	cpu_test.cpp	/^CCPUTest *m_gstInstance = NULL;$/;"	v
+m_hThread	cpu_test.cpp	/^	pthread_t		m_hThread[MAX_NUM_CPU_CORE];$/;"	m	class:CCPUTest	file:
+main	asv_test.c	/^int main ( int argc, char *argv[] )$/;"	f
+main	cpu_test.cpp	/^int32_t main( int32_t argc, char *argv[] )$/;"	f
+name	asv_type.h	/^	char name[64];					\/\/	Module Name$/;"	m	struct:ASV_TEST_MODULE
+print_usage	cpu_test.cpp	/^void print_usage( const char *appName )$/;"	f
+print_usage	hwio.c	/^void print_usage(void)$/;"	f
+readl	hwio.c	69;"	d	file:
+run	asv_type.h	/^	ASV_RESULT (*run)(void);	\/\/	Run Test$/;"	m	struct:ASV_TEST_MODULE
+send_data	asv_test.c	/^static void send_data( int fd, const char *msg )$/;"	f	file:
+set_cmu	hwio.c	/^int set_cmu(void)$/;"	f
+set_new_scheduler	dvfsutil.c	/^int set_new_scheduler(pid_t pid, int policy, int priority)$/;"	f
+status	asv_type.h	/^	ASV_RESULT (*status)(void);	\/\/	Current Status (ERR,OK,TESTING)$/;"	m	struct:ASV_TEST_MODULE
+stop	asv_type.h	/^	ASV_RESULT (*stop)(void);	\/\/	Stop Test$/;"	m	struct:ASV_TEST_MODULE
+task_command	dvfsutil.c	/^int task_command(const char *exec, bool syscmd)$/;"	f
+u32	asv_command.h	/^	uint32_t	u32;$/;"	m	union:ASV_PARAM
+u64	asv_command.h	/^	uint64_t	u64;$/;"	m	union:ASV_PARAM
+uint16_t	asv_type.h	/^typedef unsigned short		uint16_t;$/;"	t
+uint32_t	asv_type.h	/^typedef unsigned int		uint32_t;$/;"	t
+uint64_t	asv_type.h	/^typedef unsigned __int64	uint64_t;$/;"	t
+uint8_t	asv_type.h	/^typedef unsigned char		uint8_t;$/;"	t
+write_msg	asv_test.c	/^static void write_msg( int fd, const char *fmt, ... )$/;"	f	file:
+writel	hwio.c	70;"	d	file:
+~CCPUTest	cpu_test.cpp	/^	virtual ~CCPUTest(){}$/;"	f	class:CCPUTest

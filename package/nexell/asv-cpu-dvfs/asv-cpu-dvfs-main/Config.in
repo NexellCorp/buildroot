@@ -1,0 +1,4 @@
+config BR2_PACKAGE_ASV_CPU_DVFS_MAIN
+	bool "main"
+	help
+	  Main application for Dynamic Voltage and Frequency Scaling

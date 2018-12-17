@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Start cpufreq 
+#
+
+/usr/bin/cpufreq & 
+
+exit $?
