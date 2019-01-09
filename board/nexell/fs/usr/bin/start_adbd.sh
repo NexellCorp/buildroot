@@ -4,12 +4,12 @@
 #
 
 ID_VENDOR=0x18d1
-ID_PRODUCT=0x9001	# for window driver
+ID_PRODUCT=0x0001	# for window driver
 MANUFACT=`hostname`
 PRODUCT=Gadget
 SERIAL=`hostname`
 
-CONFIG_DIR=/sys/kernel/config/usb_gadget/g
+CONFIG_DIR=/sys/kernel/config/usb_gadget/g1
 CONFIG_FUNC=ffs.adb
 
 echo "path         : $CONFIG_DIR"
@@ -33,9 +33,6 @@ echo $MANUFACT   > $CONFIG_DIR/strings/0x409/manufacturer
 echo $PRODUCT    > $CONFIG_DIR/strings/0x409/product
 echo $SERIAL     > $CONFIG_DIR/strings/0x409/serialnumber;
 
-# stop adbd
-killall adbd
-
 echo "function     : $CONFIG_FUNC"
 mkdir -p $CONFIG_DIR/functions/$CONFIG_FUNC
 if [ ! -e "$CONFIG_DIR/configs/c.1/$CONFIG_FUNC" ]; then
@@ -48,7 +45,7 @@ mkdir -p /dev/usb-ffs/adb
 mount -o uid=2000,gid=2000 -t functionfs adb /dev/usb-ffs/adb
 
 adbd &
-sleep 0.2
+sleep 1
 
 #
 # Bring up USB (RESET)
