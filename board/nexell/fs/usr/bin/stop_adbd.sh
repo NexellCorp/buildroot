@@ -5,7 +5,8 @@ TASK_PID=`pidof adbd`
 
 kill $TASK_PID
 
-# must be unmount adb before rmdir
+# must be unmount adb before
+# execute 'rmdir ${CONFIG_DIR}/functions/$CONFIG_FUNC'
 if [ -d "/dev/usb-ffs/adb" ]; then
     umount /dev/usb-ffs/adb
     rmdir /dev/usb-ffs/adb
