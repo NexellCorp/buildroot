@@ -1,0 +1,21 @@
+diff --git a/inputdrivers/tslib/tslib.c b/inputdrivers/tslib/tslib.c
+index a06cd68c6..a95e24d5d 100644
+--- a/inputdrivers/tslib/tslib.c
++++ b/inputdrivers/tslib/tslib.c
+@@ -131,15 +131,10 @@ check_device( const char *device )
+ {
+      struct tsdev *ts;
+ 
+-     ts = ts_open( device, 0 );
++     ts = ts_setup( device, 0 );
+      if (!ts)
+           return false;
+ 
+-     if (ts_config( ts )) {
+-          ts_close( ts );
+-          return false;
+-     }
+-
+      ts_close( ts );
+ 
+      return true;
