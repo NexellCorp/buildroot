@@ -153,6 +153,10 @@ ifeq ($(BR2_PACKAGE_DIRECTFB_TESTS),y)
 DIRECTFB_CONF_OPTS += --with-tests
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_DRMKMS),y)
+DIRECTFB_CONF_OPTS += --enable-drmkms --disable-fbdev
+endif
+
 HOST_DIRECTFB_DEPENDENCIES = host-pkgconf host-libpng
 HOST_DIRECTFB_CONF_OPTS = \
 	--disable-multi \
