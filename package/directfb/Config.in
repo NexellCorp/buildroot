@@ -155,6 +155,11 @@ config BR2_PACKAGE_DIRECTFB_DITHER_RGB16
 	  Enable dithering when loading images to RGB16 surfaces.
 	  This increases the data section by 64 KBytes.
 
+config BR2_PACKAGE_DIRECTFB_DRMKMS
+	bool "enable drm/kms support (replace fbdev)"
+	help
+	  build with DRM/KMS support
+
 config BR2_PACKAGE_DIRECTFB_TESTS
 	bool "build directfb tests"
 
