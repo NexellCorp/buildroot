@@ -22,7 +22,6 @@ DIRECTFB_CONF_OPTS = \
 	--disable-osx \
 	--disable-video4linux \
 	--disable-video4linux2 \
-	--without-tools \
 	--disable-x11
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -63,6 +62,10 @@ ifeq ($(BR2_PACKAGE_DIRECTFB_SAWMAN),y)
 DIRECTFB_CONF_OPTS += --enable-sawman
 else
 DIRECTFB_CONF_OPTS += --disable-sawman
+endif
+
+ifneq ($(BR2_PACKAGE_DIRECTFB_EXAMPLES),y)
+DIRECTFB_CONF_OPTS += --without-tools
 endif
 
 DIRECTFB_GFX = \
