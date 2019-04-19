@@ -158,6 +158,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_DRMKMS),y)
 DIRECTFB_CONF_OPTS += --enable-drmkms --disable-fbdev
+DIRECTFB_DEPENDENCIES += libdrm
 endif
 
 HOST_DIRECTFB_DEPENDENCIES = host-pkgconf host-libpng
