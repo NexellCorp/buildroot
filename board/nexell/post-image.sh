@@ -15,3 +15,7 @@ fi
 if grep -Eq "^BR2_PACKAGE_TSLIB=y$" ${BR2_CONFIG}; then
 	cp $SKELETON_FS_DIR/etc/profile ${TARGET_DIR}/etc/profile
 fi
+
+if grep -Eq "^BR2_PACKAGE_DIRECTFB=y$" ${BR2_CONFIG}; then
+	cp $SKELETON_FS_DIR/etc/directfbrc ${TARGET_DIR}/etc/directfbrc
+fi
