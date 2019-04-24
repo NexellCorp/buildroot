@@ -14,13 +14,14 @@ if BR2_PACKAGE_NEXELL
 	endmenu
 
 	menu "Libraries"
+		source "package/nexell/libdirectfb-nexell/Config.in"
 		source "package/nexell/nx-drm-allocator/Config.in"
 		source "package/nexell/nx-v4l2/Config.in"
 		source "package/nexell/nx-video-api/Config.in"
-		source "package/nexell/libdirectfb-nexell/Config.in"
 	endmenu
 
 	menu "Applications"
+		source "package/nexell/disk_test/Config.in"
 		source "package/nexell/hwio/Config.in"
 		source "package/nexell/i2c_test/Config.in"
 		source "package/nexell/nx_video_api_test/Config.in"
