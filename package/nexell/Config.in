@@ -1,0 +1,28 @@
+config BR2_PACKAGE_NEXELL
+	bool
+
+choice
+	prompt "SoCs"
+	config BR2_PACKAGE_NXP3220
+	bool "NXP3220"
+	select BR2_PACKAGE_NEXELL
+endchoice
+
+if BR2_PACKAGE_NEXELL
+	menu "kernel"
+		source "package/nexell/kernel-headers/Config.in"
+	endmenu
+
+	menu "Libraries"
+		source "package/nexell/nx-drm-allocator/Config.in"
+		source "package/nexell/nx-v4l2/Config.in"
+		source "package/nexell/nx-video-api/Config.in"
+		source "package/nexell/libdirectfb-nexell/Config.in"
+	endmenu
+
+	menu "Applications"
+		source "package/nexell/hwio/Config.in"
+		source "package/nexell/i2c_test/Config.in"
+		source "package/nexell/nx_video_api_test/Config.in"
+	endmenu
+endif

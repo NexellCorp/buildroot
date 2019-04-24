@@ -1,0 +1,9 @@
+config BR2_PACKAGE_NX_V4L2
+	bool "nx-v4l2"
+	help
+	  library for v4l2 wrapper for nexell v4l2 drivers
+
+config BR2_PACKAGE_NX_V4L2_LOCAL_PATH
+	string "source"
+	default "../library/nx-v4l2"
+	depends on BR2_PACKAGE_NX_V4L2

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_I2C_TEST
+	bool "i2c_test"
+	help
+	 i2c test.
+
+config BR2_PACKAGE_I2C_TEST_LOCAL_PATH
+	string "source"
+	default "../apps/i2c_test"
+	depends on BR2_PACKAGE_I2C_TEST
+
