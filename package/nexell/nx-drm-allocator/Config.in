@@ -1,0 +1,12 @@
+config BR2_PACKAGE_NX_DRM_ALLOCATOR
+	bool "nx-drm-allocator"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_KERNEL_HEADERS
+	help
+	  library for nexell drm memory allocatition.
+
+config BR2_PACKAGE_NX_DRM_ALLOCATOR_LOCAL_PATH
+	string "source"
+	default "../library/nx-drm-allocator"
+	depends on BR2_PACKAGE_NX_DRM_ALLOCATOR
+

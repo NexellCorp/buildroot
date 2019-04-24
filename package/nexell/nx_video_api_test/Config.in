@@ -1,0 +1,14 @@
+config BR2_PACKAGE_NX_VIDEO_API_TEST
+	bool "nx_video_api_test"
+	select BR2_PACKAGE_NX_DRM_ALLOCATOR
+	select BR2_PACKAGE_NX_VIDEO_API
+	select BR2_PACKAGE_NX_V4L2
+	select BR2_PACKAGE_FFMPEG
+	help
+	  Nexell VPU H/W test.
+
+config BR2_PACKAGE_NX_VIDEO_API_TEST_LOCAL_PATH
+	string "source"
+	default "../apps/nx_video_api_test"
+	depends on BR2_PACKAGE_NX_VIDEO_API_TEST
+
