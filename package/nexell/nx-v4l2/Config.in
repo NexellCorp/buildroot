@@ -1,5 +1,5 @@
 config BR2_PACKAGE_NX_V4L2
-	bool "nx-v4l2"
+	bool "v4l2 api"
 	help
 	  library for v4l2 wrapper for nexell v4l2 drivers
 

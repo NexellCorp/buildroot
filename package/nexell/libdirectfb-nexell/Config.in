@@ -1,5 +1,5 @@
 config BR2_PACKAGE_LIBDIRECTFB_NEXELL
-	bool "libdirectfb-nexell"
+	bool "Directfb gfxdriver"
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_DIRECTFB_DRMKMS

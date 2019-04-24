@@ -1,5 +1,5 @@
 config BR2_PACKAGE_I2C_TEST
-	bool "i2c_test"
+	bool "i2c test"
 	help
 	 i2c test.
 
