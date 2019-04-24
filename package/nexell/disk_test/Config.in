@@ -1,5 +1,5 @@
 config BR2_PACKAGE_DISK_TEST
-	bool "disk_test"
+	bool "disk test"
 	help
 	 disk verify and test performance.
 
