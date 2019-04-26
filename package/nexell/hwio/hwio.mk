@@ -18,6 +18,7 @@ endif
 # setting HWIO_AUTORECONF = YES
 define HWIO_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
+	cd $(@D) && make distclean;
 endef
 
 HWIO_PRE_CONFIGURE_HOOKS = HWIO_RUN_AUTOGEN

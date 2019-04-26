@@ -18,6 +18,7 @@ endif
 # setting I2C_TEST_AUTORECONF = YES
 define I2C_TEST_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
+	cd $(@D) && make distclean;
 endef
 
 I2C_TEST_PRE_CONFIGURE_HOOKS = I2C_TEST_RUN_AUTOGEN
