@@ -18,6 +18,7 @@ endif
 # setting DISK_TEST_AUTORECONF = YES
 define DISK_TEST_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
+	cd $(@D) && make distclean;
 endef
 
 DISK_TEST_PRE_CONFIGURE_HOOKS = DISK_TEST_RUN_AUTOGEN
