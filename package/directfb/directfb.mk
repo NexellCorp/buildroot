@@ -16,7 +16,6 @@ DIRECTFB_AUTORECONF = YES
 DIRECTFB_CONF_OPTS = \
 	--enable-zlib \
 	--enable-freetype \
-	--enable-fbdev \
 	--disable-sdl \
 	--disable-vnc \
 	--disable-osx \
@@ -156,8 +155,12 @@ ifeq ($(BR2_PACKAGE_DIRECTFB_TESTS),y)
 DIRECTFB_CONF_OPTS += --with-tests
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTFB_FBDEV),y)
+DIRECTFB_CONF_OPTS += --enable-fbdev
+endif
+
 ifeq ($(BR2_PACKAGE_DIRECTFB_DRMKMS),y)
-DIRECTFB_CONF_OPTS += --enable-drmkms --disable-fbdev
+DIRECTFB_CONF_OPTS += --enable-drmkms
 DIRECTFB_DEPENDENCIES += libdrm
 endif
 
