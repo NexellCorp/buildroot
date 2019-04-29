@@ -21,6 +21,7 @@ NX_VIDEO_API_DEPENDENCIES = libdrm
 define NX_VIDEO_API_RUN_AUTOGEN
 	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh;
 	cd $(@D) && make distclean;
+	cd $(@D) && patch -p1 < $(TOPDIR)/$(NX_VIDEO_API_PKGDIR)0001-fix-gem-struct-name.patch;
 endef
 
 NX_VIDEO_API_PRE_CONFIGURE_HOOKS = NX_VIDEO_API_RUN_AUTOGEN
