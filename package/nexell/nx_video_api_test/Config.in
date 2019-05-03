@@ -1,5 +1,5 @@
 config BR2_PACKAGE_NX_VIDEO_API_TEST
-	bool "nx_video_api_test"
+	bool "video api test"
 	select BR2_PACKAGE_NX_DRM_ALLOCATOR
 	select BR2_PACKAGE_NX_VIDEO_API
 	select BR2_PACKAGE_NX_V4L2
