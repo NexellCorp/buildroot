@@ -1,0 +1,122 @@
+diff --git a/tests/modetest/buffers.c b/tests/modetest/buffers.c
+index 9b635c0c..c5cfadb4 100644
+--- a/tests/modetest/buffers.c
++++ b/tests/modetest/buffers.c
+@@ -141,6 +141,10 @@ bo_create(int fd, unsigned int format,
+ 	case DRM_FORMAT_NV61:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YVU420:
++	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU444:
+ 		bpp = 8;
+ 		break;
+ 
+@@ -208,9 +212,16 @@ bo_create(int fd, unsigned int format,
+ 
+ 	case DRM_FORMAT_NV16:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YVU422:
+ 		virtual_height = height * 2;
+ 		break;
+ 
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU444:
++		virtual_height = height * 3;
++		break;
++
+ 	default:
+ 		virtual_height = height;
+ 		break;
+@@ -275,6 +286,40 @@ bo_create(int fd, unsigned int format,
+ 		planes[2] = virtual + offsets[2];
+ 		break;
+ 
++	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YVU422:
++		offsets[0] = 0;
++		handles[0] = bo->handle;
++		pitches[0] = bo->pitch;
++		pitches[1] = pitches[0] / 2;
++		offsets[1] = pitches[0] * height;
++		handles[1] = bo->handle;
++		pitches[2] = pitches[1];
++		offsets[2] = offsets[1] + pitches[1] * height;
++		handles[2] = bo->handle;
++
++		planes[0] = virtual;
++		planes[1] = virtual + offsets[1];
++		planes[2] = virtual + offsets[2];
++		break;
++
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU444:
++		offsets[0] = 0;
++		handles[0] = bo->handle;
++		pitches[0] = bo->pitch;
++		pitches[1] = pitches[0];
++		offsets[1] = pitches[0] * height;
++		handles[1] = bo->handle;
++		pitches[2] = pitches[1];
++		offsets[2] = offsets[1] + pitches[1] * height;
++		handles[2] = bo->handle;
++
++		planes[0] = virtual;
++		planes[1] = virtual + offsets[1];
++		planes[2] = virtual + offsets[2];
++		break;
++
+ 	case DRM_FORMAT_ARGB4444:
+ 	case DRM_FORMAT_XRGB4444:
+ 	case DRM_FORMAT_ABGR4444:
+diff --git a/tests/util/format.c b/tests/util/format.c
+index 15ac5e1e..b48594cd 100644
+--- a/tests/util/format.c
++++ b/tests/util/format.c
+@@ -52,6 +52,10 @@ static const struct util_format_info format_info[] = {
+ 	/* YUV planar */
+ 	{ DRM_FORMAT_YUV420, "YU12", MAKE_YUV_INFO(YUV_YCbCr, 2, 2, 1) },
+ 	{ DRM_FORMAT_YVU420, "YV12", MAKE_YUV_INFO(YUV_YCrCb, 2, 2, 1) },
++	{ DRM_FORMAT_YUV422, "YU16", MAKE_YUV_INFO(YUV_YCbCr, 2, 1, 1) },
++	{ DRM_FORMAT_YVU422, "YV16", MAKE_YUV_INFO(YUV_YCrCb, 2, 1, 1) },
++	{ DRM_FORMAT_YUV444, "YU24", MAKE_YUV_INFO(YUV_YCbCr, 1, 1, 1) },
++	{ DRM_FORMAT_YVU444, "YV24", MAKE_YUV_INFO(YUV_YCrCb, 1, 1, 1) },
+ 	/* RGB16 */
+ 	{ DRM_FORMAT_ARGB4444, "AR12", MAKE_RGB_INFO(4, 8, 4, 4, 4, 0, 4, 12) },
+ 	{ DRM_FORMAT_XRGB4444, "XR12", MAKE_RGB_INFO(4, 8, 4, 4, 4, 0, 0, 0) },
+diff --git a/tests/util/pattern.c b/tests/util/pattern.c
+index 9fa0a417..42830058 100644
+--- a/tests/util/pattern.c
++++ b/tests/util/pattern.c
+@@ -481,10 +481,14 @@ static void fill_smpte(const struct util_format_info *info, void *planes[3],
+ 					     width, height, stride);
+ 
+ 	case DRM_FORMAT_YUV420:
++	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
+ 		return fill_smpte_yuv_planar(&info->yuv, planes[0], planes[1],
+ 					     planes[2], width, height, stride);
+ 
+ 	case DRM_FORMAT_YVU420:
++	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 		return fill_smpte_yuv_planar(&info->yuv, planes[0], planes[2],
+ 					     planes[1], width, height, stride);
+ 
+@@ -766,10 +770,14 @@ static void fill_tiles(const struct util_format_info *info, void *planes[3],
+ 					     width, height, stride);
+ 
+ 	case DRM_FORMAT_YUV420:
++	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
+ 		return fill_tiles_yuv_planar(info, planes[0], planes[1],
+ 					     planes[2], width, height, stride);
+ 
+ 	case DRM_FORMAT_YVU420:
++	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 		return fill_tiles_yuv_planar(info, planes[0], planes[2],
+ 					     planes[1], width, height, stride);
+ 
