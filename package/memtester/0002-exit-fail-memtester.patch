@@ -1,0 +1,26 @@
+--- memtester-4.3.0.org/memtester.c	2012-06-10 06:45:22.000000000 +0900
++++ memtester-4.3.0/memtester.c	2019-07-30 13:12:58.206751136 +0900
+@@ -376,6 +376,7 @@
+              printf("ok\n");
+         } else {
+             exit_code |= EXIT_FAIL_ADDRESSLINES;
++	    goto exit;
+         }
+         for (i=0;;i++) {
+             if (!tests[i].name) break;
+@@ -390,12 +391,15 @@
+                 printf("ok\n");
+             } else {
+                 exit_code |= EXIT_FAIL_OTHERTEST;
++	    	goto exit;
+             }
+             fflush(stdout);
+         }
+         printf("\n");
+         fflush(stdout);
+     }
++
++exit:
+     if (do_mlock) munlock((void *) aligned, bufsize);
+     printf("Done.\n");
+     fflush(stdout);
