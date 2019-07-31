@@ -19,3 +19,8 @@ fi
 if grep -Eq "^BR2_PACKAGE_DIRECTFB=y$" ${BR2_CONFIG}; then
 	cp $SKELETON_FS_DIR/etc/directfbrc ${TARGET_DIR}/etc/directfbrc
 fi
+
+if grep -Eq "^BR2_PACKAGE_MEMTESTER=y$" ${BR2_CONFIG}; then
+	cp $SKELETON_FS_DIR/usr/bin/memtest.sh ${TARGET_DIR}/usr/bin
+	chmod 755 ${TARGET_DIR}/usr/bin/memtest.sh
+fi
