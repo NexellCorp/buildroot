@@ -40,7 +40,7 @@ do
 	PID="" cpu=0
 	while [ $cpu -lt $PARALL ]
 	do
-		memtester $MEMSIZE &
+		memtester $MEMSIZE 1 &
 		PID=$PID" "$!
 		cpu=$(($cpu + 1))
 	done;
