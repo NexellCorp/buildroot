@@ -33,6 +33,8 @@ cnt=0
 while [ $cnt -lt $REPEAT ]
 do
 	temp=`cat /sys/class/thermal/thermal_zone0/temp`
+	cnt=$(($cnt + 1))
+
 	echo  -e "\033[0;33m ================================================= \033[0m"
 	echo  -e "\033[0;33m [$REPEAT:$cnt] Temperature: $temp \033[0m"
 	echo  -e "\033[0;33m ================================================= \033[0m"
@@ -40,11 +42,10 @@ do
 	PID="" cpu=0
 	while [ $cpu -lt $PARALL ]
 	do
-		memtester $MEMSIZE &
+		memtester $MEMSIZE 1 &
 		PID=$PID" "$!
 		cpu=$(($cpu + 1))
 	done;
-	cnt=$(($cnt + 1))
 
 	for pid in $PID;
 	do
