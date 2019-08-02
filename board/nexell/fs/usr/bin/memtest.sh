@@ -28,25 +28,34 @@ do
 done
 
 PARALL=`grep processor /proc/cpuinfo | wc -l`
-PID=""
 
-CNT=0
-while [ $CNT -lt $PARALL ]
+cnt=0
+while [ $cnt -lt $REPEAT ]
 do
-	memtester $MEMSIZE $REPEAT &
-   	PID=$PID" "$!
-	CNT=$(($CNT + 1))
-done;
+	temp=`cat /sys/class/thermal/thermal_zone0/temp`
+	echo  -e "\033[0;33m ================================================= \033[0m"
+	echo  -e "\033[0;33m [$REPEAT:$cnt] Temperature: $temp \033[0m"
+	echo  -e "\033[0;33m ================================================= \033[0m"
 
-for i in $PID;
-do
-	wait $i
-	if [ $? -ne 0 ]; then
-		echo  -e "\033[0;31m ================================================= \033[0m"
-		echo  -e "\033[0;31m FAILED PID.$i \033[0m"
-		echo  -e "\033[0;31m ================================================= \033[0m"
-		exit 1;
-	fi
+	PID="" cpu=0
+	while [ $cpu -lt $PARALL ]
+	do
+		memtester $MEMSIZE &
+		PID=$PID" "$!
+		cpu=$(($cpu + 1))
+	done;
+	cnt=$(($cnt + 1))
+
+	for pid in $PID;
+	do
+		wait $pid
+		if [ $? -ne 0 ]; then
+			echo  -e "\033[0;31m ================================================= \033[0m"
+			echo  -e "\033[0;31m FAILED PID.$pid \033[0m"
+			echo  -e "\033[0;31m ================================================= \033[0m"
+			exit 1;
+		fi
+	done
 done
 
 echo  -e "\033[0;33m ================================================= \033[0m"
