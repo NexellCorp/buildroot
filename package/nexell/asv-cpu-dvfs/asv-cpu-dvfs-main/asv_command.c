@@ -17,6 +17,7 @@ static const char *gStrAsvCmdStr[] = {
 	"ASVC_OFF",			//	PC Application Only
 	"ASVC_GET_IDS",		//	Get IDS
 	"ASVC_GET_HPM",		//	Get HPM RO
+	"ASVC_GET_CPUHPM",	//	Get BOOT CPUHPM RO
 	"ASVC_MAX",
 };
 
@@ -189,9 +190,10 @@ ASV_RESULT ParseStringToCommand( char *inBuf, int32_t intSize, ASV_COMMAND *cmd,
 	case ASVC_GET_ECID:
 	case ASVC_GET_IDS:
 	case ASVC_GET_HPM:
+	case ASVC_GET_CPUHPM:
 		break;
-		case ASVC_GET_TMU0:		//	Get TMU 0
-		case ASVC_GET_TMU1:		//	Get TMU 1
+	case ASVC_GET_TMU0:		//	Get TMU 0
+	case ASVC_GET_TMU1:		//	Get TMU 1
 			break;
 	case ASVC_RUN:
 		break;

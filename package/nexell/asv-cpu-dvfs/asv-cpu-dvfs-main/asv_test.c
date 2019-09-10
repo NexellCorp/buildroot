@@ -319,6 +319,14 @@ int asv_test_main(void)
 				break;
 			}
 
+			case ASVC_GET_CPUHPM:
+			{
+				uint32_t hpm;
+				GetHPM_CPU( &hpm );
+				write_msg( fd, "SUCCESS : HPM=%02x\n",
+					hpm);
+				break;
+			}
 			case ASVC_GET_ECID:
 			{
 				uint32_t ecid[4];

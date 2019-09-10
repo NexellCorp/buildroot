@@ -321,6 +321,28 @@ int32_t GetIDS( uint32_t ids[2] )
 	printf(" IDS  = %02x-%02x\n", ids[0], ids[1]);
 	return 0;
 }
+
+
+#define	CPU_HPM_FILE_NAME	"/sys/devices/platform/cpu/cpu_hpm"
+#define CPU_HPM_TEST_CNT	50
+
+int32_t GetHPM_CPU(int32_t *hpm )
+{
+	int i, sum = 0;
+	char buffer[128] = {0, };
+	FILE *fp;
+	for (i=0; i<50; i++) {
+		fp = popen("cat /sys/devices/platform/cpu/cpu_hpm","r");
+		fread(buffer,1, 8, fp);
+		sum += strtoul(buffer, NULL, 16);
+		pclose(fp);
+	}
+	*hpm = sum/50;
+
+	printf(" HPM AVG : %x \n", *hpm);
+	return 0;
+}
+
 #define	RO_FILE_NAME	"/sys/devices/platform/cpu/ro"
 int32_t GetHPM( uint32_t hpm[8] )
 {

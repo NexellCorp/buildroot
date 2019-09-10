@@ -18,6 +18,7 @@ typedef enum {
 	ASVC_OFF,		//	PC Application Only
 	ASVC_GET_IDS,		//	Get IDS
 	ASVC_GET_HPM,		//	Get HPM RO
+	ASVC_GET_CPUHPM,	//	Get BOOT CPUHPM RO
 	ASVC_MAX,
 }ASV_COMMAND;
 
