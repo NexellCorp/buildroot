@@ -47,6 +47,8 @@ int32_t SetRegulatorVoltage( REGUL_ID_TYPE id, uint32_t microVolt );
 
 int32_t GetECID( uint32_t ecid[4] );
 int32_t GetTMU(uint32_t channel, int32_t *tmutemp );
+int32_t GetHPM( uint32_t hpm[8] );
+int32_t GetHPM_CPU(int32_t *hpm );
 
 uint64_t NX_GetTickCountUs( void );
 
