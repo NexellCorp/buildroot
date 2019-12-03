@@ -26,5 +26,6 @@ if BR2_PACKAGE_NEXELL
 		source "package/nexell/i2c_test/Config.in"
 		source "package/nexell/nx_video_api_test/Config.in"
 		source "package/nexell/nx_vip_test/Config.in"
+		source "package/nexell/sleep_rtc_alarm/Config.in"
 	endmenu
 endif

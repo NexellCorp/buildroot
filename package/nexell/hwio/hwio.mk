@@ -9,7 +9,7 @@ HWIO_VERSION = 0.0.1
 HWIO_SITE_METHOD = local
 
 ifndef BR2_PACKAGE_HWIO_LOCAL_PATH
-HWIO_SITE = ../library/hwio
+HWIO_SITE = ../apps/hwio
 else
 HWIO_SITE = $(BR2_PACKAGE_HWIO_LOCAL_PATH)
 endif

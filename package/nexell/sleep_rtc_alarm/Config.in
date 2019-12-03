@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SLEEP_RTC_ALARM
+	bool "sleep rtc alarm"
+	help
+	 sleep rtc alarm.
+
+config BR2_PACKAGE_SLEEP_RTC_ALARM_LOCAL_PATH
+	string "source"
+	default "../apps/sleep_rtc_alarm"
+	depends on BR2_PACKAGE_SLEEP_RTC_ALARM
