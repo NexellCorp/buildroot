@@ -1,0 +1,4 @@
+config BR2_PACKAGE_I2STEST_LOOP
+	bool "loop"
+	help
+	  i2s loop test application for alsa test
