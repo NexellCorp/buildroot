@@ -1,0 +1,8 @@
+config BR2_PACKAGE_I2STEST
+	bool "alsa Test"
+	help
+	  alsa Test applications
+
+if BR2_PACKAGE_I2STEST
+source "package/nexell/i2stest/i2stest-loop/Config.in"
+endif
