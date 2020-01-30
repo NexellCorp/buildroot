@@ -10,6 +10,7 @@ config BR2_PACKAGE_NXP3220
 endchoice
 
 source "package/nexell/asv-devfs/Config.in"
+source "package/nexell/i2stest/Config.in"
 source "package/nexell/hwtest/Config.in"
 source "package/nexell/vpu/Config.in"
 source "package/nexell/library/Config.in"
