@@ -1,0 +1,6 @@
+config BR2_PACKAGE_NX_DRM_ALLOCATOR
+	bool "drm allocator"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_KERNEL_HEADERS
+	help
+	  library for nexell drm memory allocatition.

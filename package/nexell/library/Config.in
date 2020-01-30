@@ -1,4 +1,5 @@
 menu "Librararies"
-source "package/nexell/library/libnx_video_alloc/Config.in"
-source "package/nexell/library/libnx_video_api/Config.in"
+source "package/nexell/library/nx-v4l2/Config.in"
+source "package/nexell/library/nx-drm-allocator/Config.in"
+source "package/nexell/library/nx-video-api/Config.in"
 endmenu

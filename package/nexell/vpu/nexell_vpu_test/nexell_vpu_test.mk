@@ -7,7 +7,7 @@
 NEXELL_VPU_TEST_VERSION = 0.0.1
 NEXELL_VPU_TEST_SITE = package/nexell/vpu/nexell_vpu_test
 NEXELL_VPU_TEST_SITE_METHOD = local
-NEXELL_VPU_TEST_DEPENDENCIES = libdrm libnx_video_alloc libnx_video_api
+NEXELL_VPU_TEST_DEPENDENCIES = libdrm nx_video_api
 NEXELL_VPU_TEST_TARGET_DATA = data
 
 # we're patching configure.in, but package cannot autoreconf with our version of
