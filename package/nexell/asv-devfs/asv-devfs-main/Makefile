@@ -4,7 +4,9 @@ LDLIBS += -lpthread
 
 all: devfreq
 
-devfreq: main.o task.o asv.o devfs.o
+OBJS := main.o task.o devfs.o asv_command.o
+
+devfreq: $(OBJS)
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 clean:

@@ -1,5 +1,0 @@
-config BR2_PACKAGE_LIBNX_VIDEO_ALLOC
-	bool "libnx-video-alloc"
-	select BR2_PACKAGE_LIBDRM
-	help
-	  library for nexell video memory allocatition
