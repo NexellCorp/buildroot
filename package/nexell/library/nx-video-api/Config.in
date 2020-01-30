@@ -1,0 +1,8 @@
+config BR2_PACKAGE_NX_VIDEO_API
+	bool "VPU video api"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_NX_DRM_ALLOCATOR
+	select BR2_PACKAGE_KERNEL_HEADERS
+	help
+	  library for nexell VPU H/W video api
+

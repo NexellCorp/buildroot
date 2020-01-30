@@ -7,7 +7,7 @@
 ASV_DEVFS_VPU_VERSION = 0.0.1
 ASV_DEVFS_VPU_SITE = package/nexell/asv-devfs/asv-devfs-vpu
 ASV_DEVFS_VPU_SITE_METHOD = local
-ASV_DEVFS_VPU_DEPENDENCIES = libdrm libnx_video_alloc libnx_video_api
+ASV_DEVFS_VPU_DEPENDENCIES = libdrm nx-video-api
 ASV_DEVFS_VPU_TARGET_DATA = data
 
 # we're patching configure.in, but package cannot autoreconf with our version of

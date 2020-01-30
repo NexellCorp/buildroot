@@ -15,7 +15,7 @@
 #include <sys/wait.h>
 
 #include "task.h"
-#include "asv.h"
+#include "asv_command.h"
 #include "devfs.h"
 
 #define MAX_TX_STRING	1024
@@ -578,29 +578,29 @@ static OP_T *parse_options(int argc, char **argv)
 						(int)ARRAY_SIZE(op->task_active));
 					exit(EXIT_FAILURE);
 				}
-    			}
-    			op->active_size = size;
-    			}
-    			break;
-       		case 'c':
-       			{
-       			char *s = optarg;
+				}
+				op->active_size = size;
+				}
+				break;
+			case 'c':
+				{
+				char *s = optarg;
 
-       			if (!strcmp(s, "y"))
-       				op->continue_stat = 1;
+				if (!strcmp(s, "y"))
+					op->continue_stat = 1;
 
-       			if (!strcmp(s, "n"))
-       				op->continue_stat = 0;
-       			}
-       			break;
-       		case 't':
+				if (!strcmp(s, "n"))
+					op->continue_stat = 0;
+				}
+				break;
+			case 't':
 			op->test_mode = true;
 			break;
-        	default:
-        		print_help(argv[0], op);
-        		exit(EXIT_FAILURE);
-        		break;
-	      	}
+			default:
+				print_help(argv[0], op);
+				exit(EXIT_FAILURE);
+				break;
+			}
 	}
 
 	return op;
@@ -909,25 +909,27 @@ int main(int argc, char **argv)
 
 	ASVMSG(fd, "\nBOOT DONE.\n");
 
-	while (1) {
+	while (1)
+	{
 		char buff[128] = { 0, };
 
 		read(fd, buff, sizeof(buff));
 
-		ret = asv_parse_command(buff, sizeof(buff), &cmd, &id, &param);
-		if (ASV_RES_OK != ret) {
+		ret = ParseStringToCommand(buff, sizeof(buff), &cmd, &id, &param);
+		if (ASV_RES_OK != ret)
+		{
 			LogE("Error: Parsing command: %s\n", buff);
 			continue;
 		}
 
-		switch (cmd) {
+		switch (cmd)
+		{
 		case ASVC_SET_FREQ:
 			ASVMSG(fd, "ASVC_SET_FREQ DEV\n");
-			if(id != ASVM_DEVICE) {
+			if( (id != ASVM_MM) && (id != ASVM_SYS) ){
 				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
 			}
-
 			ret = sys_dev_set_freq(param.u32);
 			if(ret)
 				ASVMSG(fd, "FAIL : ASVC_SET_FREQ ASVM_DEVICE %dHz\n",
@@ -941,8 +943,8 @@ int main(int argc, char **argv)
 			uV = param.f32 * 1000000;
 
 			ASVMSG(fd, "ASVC_SET_VOLT DEV\n");
-			if(id != ASVM_DEVICE) {
-				ASVMSG(fd, "FAIL : Not support id.%d\n", id);
+			if( (id != ASVM_MM) && (id != ASVM_SYS) ){
+				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
 			}
 
@@ -992,14 +994,14 @@ int main(int argc, char **argv)
 			ASVMSG(fd, "TEST : RUN TEST(%d)\n", cmd);
 			ret = run_tasks(op);
 			if(!ret)
-				ASVMSG(fd, "SUCCESS : ASVC_RUN %s\n", asv_get_id_name(id));
+				ASVMSG(fd, "SUCCESS : ASVC_RUN %s\n", ASVModuleIDToString(id));
 			else
-				ASVMSG(fd, "FAIL : ASVC_RUN %s\n", asv_get_id_name(id));
+				ASVMSG(fd, "FAIL : ASVC_RUN %s\n", ASVModuleIDToString(id));
 			break;
 		default:
 			ASVMSG(fd, "FAIL : Unknown Command(%d)\n", cmd);
 			break;
-		}
+		}	// end of switch
 
 		if (ret) {
 			LogE("Error: result !!!\n");

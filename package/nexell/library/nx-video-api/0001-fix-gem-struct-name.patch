@@ -1,0 +1,13 @@
+diff --git a/src/nx_video_alloc_drm.c b/src/nx_video_alloc_drm.c
+index d6580f8..7ac4df8 100644
+--- a/src/nx_video_alloc_drm.c
++++ b/src/nx_video_alloc_drm.c
+@@ -70,7 +70,7 @@ static int drm_command_write_read(int fd, uint32_t command_index,
+  */
+ static int alloc_gem(int drm_fd, int size, int flags)
+ {
+-	struct nx_drm_gem_create arg = { 0, };
++	struct nx_gem_create arg = { 0, };
+ 	int ret;
+
+ 	arg.size = (uint32_t)size;
