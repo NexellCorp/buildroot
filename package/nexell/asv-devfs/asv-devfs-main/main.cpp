@@ -711,6 +711,7 @@ static int open_asv_console(const char *terminal)
 	return fd;
 }
 
+#if 0
 static int setup_asv_task(OP_T *op)
 {
 	unsigned int ids[2] = { 0, }, hpm[8] = { 0, };
@@ -877,6 +878,46 @@ static int setup_asv_task(OP_T *op)
 
 	return 0;
 }
+#else
+static int setup_asv_task(OP_T *op)
+{
+	const char *cmd;
+	int ret;
+
+	//	Usb Mass Storage
+	cmd = "ums.configfs.sh lun";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+		return ret;
+	}
+
+	//	FIXME : Waiting usb mass storage mount functionality.
+	sleep(3);
+
+	mkpath("/mnt/otg_ums" , 0755);
+	cmd = "mount -t vfat /dev/sdb /mnt/otg_ums";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+		return ret;
+	}
+
+	//	Mount USB Disk for VPU Test
+	mkpath("/mnt/usbdsk" , 0755);
+	cmd = "mount /dev/sda1 /mnt/usbdsk";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+		return ret;
+	}
+
+	return 0;
+}
+#endif
 
 int main(int argc, char **argv)
 {
