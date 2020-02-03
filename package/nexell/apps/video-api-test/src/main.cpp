@@ -49,6 +49,9 @@ enum {
 void print_usage(const char *appName)
 {
 	printf(
+
+	//           1         2         3         4         5         6         7         8         9        10        11        12
+	//  123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 		"Usage : %s [options] -i [input file], [M] = mandatory, [O] = Optional \n"
 		"  common options :\n"
 		"     -m [mode]                  [O]  : 1:decoder mode, 2:encoder mode (def:decoder mode)\n"
@@ -61,6 +64,9 @@ void print_usage(const char *appName)
 		"     -j [seek frame],[position] [O]  : seek start frame, seek potition(sec)\n"
 		"     -d [frame num],[file name] [O]  : dump frame number, dump file name\n"
 		"     -l [frame num]             [O]  : max limitation frame\n"
+		" -------------------------------------------------------------------------------------------------------------------\n"
+		"  compare mode options :\n"
+		"     -p [frame num],[prefix]    [O]  : compare frame number(-1:compare all), godlen data's prefix(file path + prefix)\n"
 		" -------------------------------------------------------------------------------------------------------------------\n"
 		"  only encoder options :\n"
 		"     -c [codec]                 [O]  : 0:H.264, 1:Mp4v, 2:H.263, 3:JPEG (def:H.264)\n"
@@ -208,7 +214,7 @@ int32_t main(int32_t argc, char *argv[])
 	CODEC_APP_DATA appData;
 	memset(&appData, 0, sizeof(CODEC_APP_DATA));
 
-	while (-1 != (opt = getopt(argc, argv, "m:i:o:hc:d:s:f:b:g:q:v:x:j:l:r:t:")))
+	while (-1 != (opt = getopt(argc, argv, "m:i:o:hc:d:s:f:b:g:q:v:x:j:l:r:t:p:")))
 	{
 		switch (opt)
 		{
@@ -236,7 +242,9 @@ int32_t main(int32_t argc, char *argv[])
 		case 'v':	appData.vbv = atoi(optarg);  break;
 		case 'x':	appData.maxQp = atoi(optarg);  break;
 		case 'j':	sscanf(optarg, "%d,%d", &appData.iSeekStartFrame, &appData.iSeekPos);  break;
-		case 'r':	sscanf(optarg, "%u", &iRepeat);
+		case 'r':	sscanf(optarg, "%u", &iRepeat); break;
+		case 'l':	appData.iMaxLimitFrame = atoi(optarg);  break;
+		case 'p':	sscanf(optarg, "%d,%s", &appData.iCompareNumber, &szTemp);appData.compareFilePrefix = strdup(szTemp); break;
 		default:	break;
 		}
 	}

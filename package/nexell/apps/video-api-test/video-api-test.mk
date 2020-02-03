@@ -6,10 +6,10 @@
 
 VIDEO_API_TEST_VERSION = 0.0.1
 VIDEO_API_TEST_SITE_METHOD = local
-VIDEO_API_TEST_TARGET_NAME = video_api_test
+VIDEO_API_TEST_TARGET_NAME = video-api-test
 
-VIDEO_API_TEST_SITE = package/nexell/apps/video_api_test
-VIDEO_API_TEST_DEPENDENCIES = ffmpeg nx-v4l2 nx-drm-allocator
+VIDEO_API_TEST_SITE = package/nexell/apps/video-api-test
+VIDEO_API_TEST_DEPENDENCIES = ffmpeg nx-v4l2 nx-video-api nx-drm-allocator
 
 # autotools, so we have to do it manually instead of
 # setting VIDEO_API_TEST_AUTORECONF = YES
