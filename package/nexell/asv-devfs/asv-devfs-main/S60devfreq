@@ -3,6 +3,6 @@
 # Start devfreq 
 #
 
-/usr/bin/devfreq -f /data/nxp3220_asv_devfreq.js -p
+#/usr/bin/devfreq -f /data/nxp3220_asv_devfreq.js -p
 
 exit $?
