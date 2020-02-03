@@ -458,7 +458,7 @@ bool CMediaReader::OpenFile(const char *fileName)
 		goto ErrorExit;
 	}
 
-	av_dump_format(fmt_ctx, 0, fileName, 0);
+	//av_dump_format(fmt_ctx, 0, fileName, 0);
 
 	//	Video Codec Binding
 	for( i=0; i<(int)fmt_ctx->nb_streams ; i++ )

@@ -439,6 +439,37 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 						printf("Dump Frame. ( frm: %d, name: %s )\n", outFrmCnt, pAppData->dumpFileName);
 						NX_V4l2DumpMemory(hCurImg, (const char*)pAppData->dumpFileName );
 					}
+					else if( pAppData->dumpFileName && pAppData->dumpFrameNumber == -1 )
+					{
+						//	Dump All File
+						char outFileName[128];
+						sprintf(outFileName, "%s_%04d", pAppData->dumpFileName, outFrmCnt);
+						printf("Dump Frame. ( frm: %d, name: %s )\n", outFrmCnt, outFileName);
+						NX_V4l2DumpMemory(hCurImg, (const char*)outFileName );
+					}
+
+					if( pAppData->compareFilePrefix && outFrmCnt == pAppData->iCompareNumber )
+					{
+						char goldenFileName[128];
+						sprintf(goldenFileName, "%s_%04d", pAppData->compareFilePrefix, pAppData->iCompareNumber);
+						printf("Compare frame : outFrame %d vs %s\n", outFrmCnt, goldenFileName );
+						if( 0 != NX_CompareVideoMemory(hCurImg, goldenFileName) )
+						{
+							printf("Compare failed !!!!\n");
+							return -1;
+						}
+					}
+					else if( pAppData->compareFilePrefix && -1 == pAppData->iCompareNumber )
+					{
+						char goldenFileName[128];
+						sprintf(goldenFileName, "%s_%04d", pAppData->compareFilePrefix, outFrmCnt);
+						printf("Compare all frame : outFrame %d vs %s\n", outFrmCnt, goldenFileName );
+						if( 0 != NX_CompareVideoMemory(hCurImg, goldenFileName) )
+						{
+							printf("Compare failed !!!!\n");
+							return -1;
+						}
+					}
 
 					if( prvIndex >= 0 )
 					{
@@ -457,11 +488,11 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 				frmCnt++;
 				additionSize = 0;
 
-				if (pAppData->iMaxLimitFrame != 0 && pAppData->iMaxLimitFrame <= frmCnt)
+				if (pAppData->iMaxLimitFrame != 0 && pAppData->iMaxLimitFrame <= outFrmCnt)
 				{
 					printf("Force Break by User.\n");
-					ret = -1;
-					break;
+					return 0;
+//					break;
 				}
 			} while( size == 0 && decOut.dispIdx >= 0 && !ret );
 

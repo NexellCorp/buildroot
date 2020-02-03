@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 
 #include <linux/videodev2.h>
@@ -564,6 +565,69 @@ int32_t NX_V4l2DumpMemory( NX_VID_MEMORY_INFO *pInMemory, FILE *pFile )
 			fwrite( pPtr, 1, iChromaWidth, pFile );
 			pPtr += pInMemory->stride[i];
 		}
+	}
+
+	return 0;
+}
+
+//------------------------------------------------------------------------------
+int32_t NX_CompareVideoMemory( NX_VID_MEMORY_INFO *pInMemory, const char *filename )
+{
+	FILE *fpIn = fopen( filename, "rb" );
+	if (fpIn)
+	{
+		uint8_t *fileBuf;
+		long size;
+		size_t readSize;
+		uint8_t *pPtr, *pPtrFile;
+		int32_t iLumaWidth = pInMemory->width;
+		int32_t iLumaHeight = pInMemory->height;
+		int32_t iChromaWidth, iChromaHeight;
+
+		GetChromaSize( pInMemory, &iChromaWidth, &iChromaHeight );
+
+		fseek(fpIn, 0, SEEK_END);
+		 size = ftell(fpIn);
+		fseek(fpIn, 0, SEEK_SET);
+		fileBuf = (uint8_t*)malloc( size );
+		readSize = fread(fileBuf, 1, size, fpIn);
+
+		//	copy pointer of the file buffer
+		pPtrFile = fileBuf;
+
+		//	Compare Luma Memory
+		pPtr = (uint8_t*)pInMemory->pBuffer[0];
+		for( int32_t h=0 ; h<pInMemory->height ; h++ )
+		{
+			if( 0 != memcmp( pPtr, pPtrFile, iLumaWidth ) )
+			{
+				return -1;
+			}
+			pPtr += pInMemory->stride[0];
+			pPtrFile += iLumaWidth;
+		}
+
+		//	Compare Chroma Memory
+		for( int32_t i = 1; i < pInMemory->planes; i++ )
+		{
+			pPtr = (uint8_t*)pInMemory->pBuffer[i];
+			for( int32_t h = 0; h<iChromaHeight ; h++ )
+			{
+				if( 0 != memcmp( pPtr, pPtrFile, iChromaWidth ) )
+				{
+					return -1;
+				}
+				pPtr += pInMemory->stride[i];
+				pPtrFile += iChromaWidth;
+			}
+		}
+
+		fclose(fpIn);
+		free(fileBuf);
+	}
+	else
+	{
+		return -1;
 	}
 
 	return 0;

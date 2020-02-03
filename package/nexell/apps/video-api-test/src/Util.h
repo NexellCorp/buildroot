@@ -32,6 +32,10 @@ typedef struct CODEC_APP_DATA {
 	/* Dump Options */
 	uint32_t dumpFrameNumber;	/* Dump Frame Number */
 	char *dumpFileName;			/* Dump File Name */
+
+	/* Compare Options */
+	int32_t iCompareNumber;		/* Frame Compare Number : -1(all frame) */
+	char *compareFilePrefix;
 } CODEC_APP_DATA;
 
 uint64_t NX_GetTickCount( void );

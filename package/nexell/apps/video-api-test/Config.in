@@ -1,0 +1,9 @@
+config BR2_PACKAGE_VIDEO_API_TEST
+	bool "video api test"
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_NX_V4L2
+	select BR2_PACKAGE_NX_VIDEO_API
+	select BR2_PACKAGE_KERNEL_HEADERS
+	help
+	  Nexell VIDEO API test applications
+
