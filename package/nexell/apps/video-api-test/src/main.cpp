@@ -204,7 +204,7 @@ static void FreeFileList( char *pFileList[MAX_FILE_LIST], int32_t iFileNum )
 //------------------------------------------------------------------------------
 int32_t main(int32_t argc, char *argv[])
 {
-	int32_t iRet = 0;
+	int32_t iRet = -1;
 	int32_t opt;
 	int32_t mode = DECODER_MODE;
 	uint32_t iRepeat = 1, iCount = 0;
@@ -269,6 +269,9 @@ int32_t main(int32_t argc, char *argv[])
 				FreeFileList( pFileList, iFileNum );
 				appData.inFileName = NULL;
 			}
+			else{
+				iRet = -1;
+			}
 			break;
 		case ENCODER_MODE:
 #ifndef ENABLE_3220
@@ -281,6 +284,8 @@ int32_t main(int32_t argc, char *argv[])
 	if( appData.inFileName )	free( appData.inFileName );
 	if( appData.inDirectory )	free( appData.inDirectory );
 	if( appData.outFileName )	free( appData.outFileName );
+
+	printf("Video API Test Result : %d\n", iRet);
 
 	return iRet;
 }

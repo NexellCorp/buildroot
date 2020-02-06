@@ -126,7 +126,7 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 	if (!pMediaReader->OpenFile( pAppData->inFileName))
 	{
 		printf("Cannot open media file(%s)\n", pAppData->inFileName);
-		exit(-1);
+		return -1;
 	}
 	pMediaReader->GetVideoResolution(&imgWidth, &imgHeight);
 
@@ -398,7 +398,7 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 				if (ret < 0)
 				{
 					printf("Fail, NX_V4l2DecDecodeFrame().\n");
-					break;
+					goto DEC_TERMINATE;
 				}
 
 #if NX_ENABLE_FRAME_INFO
@@ -477,7 +477,7 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 						if (0 > ret)
 						{
 							printf("Fail, NX_V4l2DecClrDspFlag().\n");
-							break;
+							goto DEC_TERMINATE;
 						}
 					}
 
@@ -501,7 +501,11 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 
 		if( prvIndex >= 0 )
 		{
-			NX_V4l2DecClrDspFlag(hDec, NULL, prvIndex);
+			ret = NX_V4l2DecClrDspFlag(hDec, NULL, prvIndex);
+			if( 0 > ret )
+			{
+				goto DEC_TERMINATE;
+			}
 			prvIndex = -1;
 		}
 
@@ -514,7 +518,12 @@ int32_t VpuDecMain( CODEC_APP_DATA *pAppData )
 	//==============================================================================
 DEC_TERMINATE:
 	if (hDec)
-		ret = NX_V4l2DecClose(hDec);
+	{
+		if( 0 < NX_V4l2DecClose(hDec) )
+		{
+			printf( "NX_V4l2DecClose() Error!!!\n`");
+		}
+	}
 
 	if(hDsp)
 	{
