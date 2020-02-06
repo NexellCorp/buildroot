@@ -43,6 +43,26 @@ int sys_uid_ecid(unsigned int *ecid, int size);
 int sys_uid_ids(unsigned int *ids, int size);
 int sys_uid_hpm(unsigned int *hpm, int size);
 
+
+/*
+ * Device MM
+ */
+int sys_dev_mm_coda_set_freq(uint32_t hz);
+int sys_dev_mm_set_volt(uint32_t uVolt);
+int sys_dev_mm_axi_set_freq(uint32_t hz);
+
+
+/*
+ * System Bus
+ */
+int sys_dev_sysbus_set_volt(uint32_t uVolt);
+int sys_dev_sysbus_set_freq(uint32_t hz);
+
+
+int32_t GetHPM( uint32_t hpm[8] );
+int32_t GetHPM_CPU(uint32_t *hpm );
+
+
 #ifdef __cplusplus
 }
 #endif

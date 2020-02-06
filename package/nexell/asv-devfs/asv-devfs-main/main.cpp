@@ -18,6 +18,8 @@
 #include "asv_command.h"
 #include "devfs.h"
 
+#define ENABLE_UMS	1
+
 #define MAX_TX_STRING	1024
 #define	RET_FILE_NAME	"RESULT.txt"
 #define	TTY_CONSOLE	"/dev/ttyS0"
@@ -884,6 +886,7 @@ static int setup_asv_task(OP_T *op)
 	const char *cmd;
 	int ret;
 
+#if ENABLE_UMS
 	//	Usb Mass Storage
 	cmd = "ums.configfs.sh lun";
 	ret = system(cmd);
@@ -905,6 +908,7 @@ static int setup_asv_task(OP_T *op)
 		return ret;
 	}
 
+#endif
 	//	Mount USB Disk for VPU Test
 	mkpath("/mnt/usbdsk" , 0755);
 	cmd = "mount /dev/sda1 /mnt/usbdsk";
@@ -914,6 +918,8 @@ static int setup_asv_task(OP_T *op)
 		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
 		return ret;
 	}
+
+	sleep(1);
 
 	return 0;
 }
@@ -971,30 +977,42 @@ int main(int argc, char **argv)
 				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
 			}
-			ret = sys_dev_set_freq(param.u32);
+			if( id == ASVM_MM )
+			{
+				ret = sys_dev_mm_coda_set_freq(param.u32);
+			}
+			else if( id == ASVM_SYS )
+			{
+				ret = sys_dev_sysbus_set_freq(param.u32);
+			}
+
 			if(ret)
-				ASVMSG(fd, "FAIL : ASVC_SET_FREQ ASVM_DEVICE %dHz\n",
-					param.u32);
+				ASVMSG(fd, "FAIL : ASVC_SET_FREQ %s %dHz\n", ASVModuleIDToString(id), param.u32);
 			else
-				ASVMSG(fd, "SUCCESS : ASVC_SET_FREQ ASVM_DEVICE %dHz\n",
-					param.u32);
+				ASVMSG(fd, "SUCCESS : ASVC_SET_FREQ %s %dHz\n", ASVModuleIDToString(id), param.u32);
 			break;
 
 		case ASVC_SET_VOLT:
-			uV = param.f32 * 1000000;
+			uV = param.f64 * 1000000;
 
 			ASVMSG(fd, "ASVC_SET_VOLT DEV\n");
 			if( (id != ASVM_MM) && (id != ASVM_SYS) ){
 				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
 			}
-
-			ret = sys_vdd_set(vdd, uV);
+			if( id == ASVM_MM )
+			{
+				ret = sys_dev_mm_set_volt( uV );
+			}
+			else if( id == ASVM_SYS )
+			{
+				sys_dev_sysbus_set_volt( uV );
+			}
 			if(ret)
-				ASVMSG(fd, "FAIL : ASVC_SET_VOLT ASVM_DEVICE %fv\n",
+				ASVMSG(fd, "FAIL : ASVC_SET_VOLT %s %fv\n", ASVModuleIDToString(id),
 					(float)((uV)/1000000.));
 			else
-				ASVMSG(fd, "SUCCESS : ASVC_SET_VOLT ASVM_DEVICE %fv\n",
+				ASVMSG(fd, "SUCCESS : ASVC_SET_VOLT %s %fv\n", ASVModuleIDToString(id),
 					(float)((uV)/1000000.));
 			break;
 
@@ -1015,6 +1033,14 @@ int main(int argc, char **argv)
 					hpm[0], hpm[1], hpm[2], hpm[3], hpm[4], hpm[5], hpm[6], hpm[7]);
 			break;
 
+		case ASVC_GET_CPUHPM:
+		{
+			uint32_t hpm;
+			GetHPM_CPU( &hpm );
+			ASVMSG( fd, "SUCCESS : HPM=%02x\n", hpm);
+			break;
+		}
+
 		case ASVC_GET_ECID:
 			ret = sys_uid_ecid(ecid, ARRAY_SIZE(ecid));
 			if(ret)
@@ -1031,8 +1057,26 @@ int main(int argc, char **argv)
 				ASVMSG(fd, "SUCCESS : TMU=%d\n", temp);
 			break;
 
+		case ASVC_SET_AXI_FREQ:
+			ASVMSG(fd, "ASVC_SET_AXI_FREQ : %d\n", param.u32);
+			ret = sys_dev_mm_axi_set_freq( param.u32 );
+			if( ret )
+				ASVMSG(fd, "FAIL : ASVC_SET_AXI_FREQ %s %dHz\n", ASVModuleIDToString(id), param.u32);
+			else
+				ASVMSG(fd, "SUCCESS : ASVC_SET_AXI_FREQ %s %dHz\n", ASVModuleIDToString(id), param.u32);
+			break;
+
 		case ASVC_RUN:
 			ASVMSG(fd, "TEST : RUN TEST(%d)\n", cmd);
+			if ( id == ASVM_MM )
+			{
+				//
+				//	just run only VPU
+
+				op->task_active[0] = 0;		//	0 means VPU's task id ==> This is comes form input json file
+				op->active_size = 1;
+			}
+
 			ret = run_tasks(op);
 			if(!ret)
 				ASVMSG(fd, "SUCCESS : ASVC_RUN %s\n", ASVModuleIDToString(id));

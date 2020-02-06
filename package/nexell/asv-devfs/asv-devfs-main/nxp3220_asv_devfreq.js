@@ -7,7 +7,7 @@
 		"thread"   : true,
 		"path"	   : "/usr/bin",
 		"command"  : "video_api_test",
-		"args"     : " -i /mnt/usbdsk/test.mkv -l11 -p-1,/mnt/usbdsk/golden/test_golden",
+		"args"     : " -i /mnt/usbdsk/test.mkv -l31 -p30,/mnt/usbdsk/golden/test_golden",
 		"logofile" : "log_vpu.txt"
 	},
 	"1": {

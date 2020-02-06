@@ -11,13 +11,16 @@ static const char *gStrAsvCmdStr[] = {
 	"ASVC_GET_ECID",
 	"ASVC_RUN",
 	"ASVC_STATUS",
-	"ASVC_GET_TMU0",	//	Get TMU 0
-	"ASVC_GET_TMU1",	//	Get TMU 1
-	"ASVC_ON",			//	PC Application Only
-	"ASVC_OFF",			//	PC Application Only
-	"ASVC_GET_IDS",		//	Get IDS
-	"ASVC_GET_HPM",		//	Get HPM RO
-	"ASVC_GET_CPUHPM",	//	Get BOOT CPUHPM RO
+	"ASVC_GET_TMU0",		//	Get TMU 0
+	"ASVC_GET_TMU1",		//	Get TMU 1
+	"ASVC_ON",				//	PC Application Only
+	"ASVC_OFF",				//	PC Application Only
+	"ASVC_GET_IDS",			//	Get IDS
+	"ASVC_GET_HPM",			//	Get HPM RO
+	"ASVC_GET_CPUHPM",		//	Get BOOT CPUHPM RO
+	"ASVC_GET_CORE_HPM",	//	Get Core HPM
+	"ASVC_SET_AXI_FREQ",	//	Set AXI Frequency : 
+							//		It was orignally created to set AXI bus freqeuncy for NXP3220's MM Block.
 	"ASVC_MAX",
 };
 
@@ -118,7 +121,7 @@ ASV_RESULT MakeCommandString( char *outBuf, int32_t outSize, ASV_COMMAND cmd, AS
 	else if( ASVC_SET_VOLT == cmd )
 	{
 		strcat(outBuf, " ");			//	Add Space
-		sprintf( paramStr, "%f", param.f32 );
+		sprintf( paramStr, "%f", param.f64 );
 		strcat(outBuf, paramStr);
 	}
 	outBuf[strlen(outBuf)] = '\n';
@@ -177,16 +180,17 @@ ASV_RESULT ParseStringToCommand( char *inBuf, int32_t intSize, ASV_COMMAND *cmd,
 	switch( asvCmd )
 	{
 	case ASVC_SET_FREQ:
+	case ASVC_SET_AXI_FREQ: 
 		param->u32 = atoi(cmds[2]);
 		break;
 	case ASVC_SET_VOLT:
 #ifdef WIN32
-		_atoflt((_CRT_FLOAT*)&param->f32, cmds[2]);
+		_atodbl((_CRT_FLOAT*)&param->f64, cmds[2]);
 #else
 #ifdef LINUX_APP
-		param->f32 = strtof( cmds[2], NULL );
+		param->f64 = strtof( cmds[2], NULL );
 #else
-		param->f32 = NXatof( cmds[2] );
+		param->f64 = NXatof( cmds[2] );
 #endif
 #endif
 		break;
@@ -194,7 +198,7 @@ ASV_RESULT ParseStringToCommand( char *inBuf, int32_t intSize, ASV_COMMAND *cmd,
 	case ASVC_GET_IDS:
 	case ASVC_GET_HPM:
 	case ASVC_GET_CPUHPM:
-		break;
+	case ASVC_GET_CORE_HPM:
 	case ASVC_GET_TMU0:		//	Get TMU 0
 	case ASVC_GET_TMU1:		//	Get TMU 1
 			break;
