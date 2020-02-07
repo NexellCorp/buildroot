@@ -10,7 +10,7 @@
 #include <errno.h>
 #include <time.h>
 
-#define	IN_FILE_NAME			"/mnt/mmc0/data/0xaa55_48000_16bit.wav"
+#define	IN_FILE_NAME			"/data/0xaa55_48000_16bit.wav"
 #define	OUT_FILE_NAME			"/tmp/i2s_test.wav"
 
 #define I2S_PORT				(0)
