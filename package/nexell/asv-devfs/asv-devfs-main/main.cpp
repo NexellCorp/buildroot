@@ -886,7 +886,6 @@ static int setup_asv_task(OP_T *op)
 	const char *cmd;
 	int ret;
 
-#if ENABLE_UMS
 	//	Usb Mass Storage
 	cmd = "ums.configfs.sh lun";
 	ret = system(cmd);
@@ -896,9 +895,54 @@ static int setup_asv_task(OP_T *op)
 		return ret;
 	}
 
-	//	FIXME : Waiting usb mass storage mount functionality.
-	sleep(3);
+#if 0
+	/*
+	 * Ethernet
+	 */
+	cmd = "ifconfig eth0 hw ether \"00:50:56:c1:11:02\"";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+	     /*	return ret; */
+	}
+	printf("ret.%d %s\n", ret, cmd);
 
+	cmd = "ifconfig eth0 192.168.1.151 up";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+	     /*	return ret; */
+	}
+	printf("ret.%d %s\n", ret, cmd);
+
+	cmd = "ifconfig eth1 hw ether \"00:50:56:c1:11:03\"";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+	     /*	return ret; */
+	}
+	printf("ret.%d %s\n", ret, cmd);
+
+	cmd = "ifconfig eth1 192.168.1.152 up";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+	     /*	return ret; */
+	}
+	printf("ret.%d %s\n", ret, cmd);
+#endif
+
+	//	FIXME : Waiting usb mass storage mount functionality.
+	sleep(2);
+
+
+	//
+	//	Mount OTG USB Mass Storage Driver With USB Host Port
+	//
 	mkpath("/mnt/otg_ums" , 0755);
 	cmd = "mount -t vfat /dev/sdb /mnt/otg_ums";
 	ret = system(cmd);
@@ -908,7 +952,6 @@ static int setup_asv_task(OP_T *op)
 		return ret;
 	}
 
-#endif
 	//	Mount USB Disk for VPU Test
 	mkpath("/mnt/usbdsk" , 0755);
 	cmd = "mount /dev/sda1 /mnt/usbdsk";
@@ -972,7 +1015,7 @@ int main(int argc, char **argv)
 		switch (cmd)
 		{
 		case ASVC_SET_FREQ:
-			ASVMSG(fd, "ASVC_SET_FREQ DEV\n");
+			ASVMSG(fd, "ASVC_SET_FREQ DEV (id=%d, %s)\n", id, ASVModuleIDToString(id));
 			if( (id != ASVM_MM) && (id != ASVM_SYS) ){
 				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
@@ -995,7 +1038,7 @@ int main(int argc, char **argv)
 		case ASVC_SET_VOLT:
 			uV = param.f64 * 1000000;
 
-			ASVMSG(fd, "ASVC_SET_VOLT DEV\n");
+			ASVMSG(fd, "ASVC_SET_VOLT DEV (id=%d, %s)\n", id, ASVModuleIDToString(id));
 			if( (id != ASVM_MM) && (id != ASVM_SYS) ){
 				ASVMSG(fd, "FAIL : Not support id:%d\n", id);
 				break;
@@ -1072,7 +1115,6 @@ int main(int argc, char **argv)
 			{
 				//
 				//	just run only VPU
-
 				op->task_active[0] = 0;		//	0 means VPU's task id ==> This is comes form input json file
 				op->active_size = 1;
 			}
