@@ -420,7 +420,7 @@ int sys_dev_sysbus_set_freq(uint32_t hz)
 	int ret;
 	uint32_t pll0 = 0;
 
-	printf("sys_dev_mm_coda_set_freq = %ld Hz\n", hz);
+	printf("sys_dev_sysbus_set_freq = %ld Hz\n", hz);
 	switch( hz )
 	{
 		case 100000000:
