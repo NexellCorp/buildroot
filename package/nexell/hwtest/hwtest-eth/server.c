@@ -1,12 +1,12 @@
 /*
-   ============================================================================
-Name        : server.c
-Author      : Javier Lopez
-Version     :
-Copyright   :
-Description :
-============================================================================
-*/
+ ****************************************************************************
+ *	Name        : server.c
+ *	Author      : Javier Lopez
+ *	Version     :
+ *	Copyright   :
+ *	Description :
+ ****************************************************************************
+ */
 
 #include <pthread.h>
 #include <sys/socket.h>
@@ -26,10 +26,13 @@ Description :
 #include <stdio.h>
 #include "rawsend.h"
 
-int sock_fd = 0;
+int sock_fd;
 char *ifname;
-int running = 1;
+int running;
 struct raw_result server_result;
+unsigned char *out_buff;
+struct ethhdr *out_hdr;
+int sending;
 
 void print_result(struct raw_result *result)
 {
@@ -53,7 +56,9 @@ void print_result(struct raw_result *result)
 int open_socket(const char *ifname)
 {
 	struct ifreq ifr;
-	int sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+	int sock;
+
+	sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		exit(EXIT_FAILURE);
 
@@ -141,9 +146,29 @@ double timeval_subtract(struct timeval *result, struct timeval *t2,
 	return ret;
 }
 
+void *send_packets_thread(void *ptr)
+{
+	struct sockaddr_ll *d_addr = ptr;
+	int send;
+	int i;
 
-int main(int argc, char *argv[]) {
-	unsigned char *buff = (void *)malloc(PACKET_SIZE);
+	while (sending) {
+		send = sendto(sock_fd, out_buff, ETH_FRAME_LEN, 0,
+			(struct sockaddr *)d_addr, sizeof(struct sockaddr_ll));
+
+		if (send == -1)
+			break;
+
+		usleep(2);
+	}
+
+	return NULL;
+}
+
+int main(int argc, char *argv[])
+{
+	pthread_t snd_thread;
+	unsigned char *buff = (void *)malloc(ETH_FRAME_LEN);
 	unsigned char *data_ptr = buff + ETH_HLEN;
 	unsigned char dst_mac[ETH_ALEN];
 	struct ethhdr *eth_hdr = (struct ethhdr *)buff;
@@ -154,20 +179,32 @@ int main(int argc, char *argv[]) {
 	double diff;
 	int if_index = 0, recv, i, seq;
 
-	if (argc < 2)
-	{
-		printf("Missing arguments.\n" "%s [ifname] \n", argv[0]);
+	sock_fd = 0;
+	running = 1;
+	sending = 1;
+
+	if (argc < 2) {
+		printf("Missing arguments.\n%s [ifname]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
 	ifname = argv[1];
 
+	/* Initialize buffers */
+	memset(&server_result, 0, sizeof(server_result));
+
+	out_buff = malloc(ETH_FRAME_LEN);
+	memset(out_buff, 0, ETH_FRAME_LEN);
+	out_hdr = (struct ethhdr *)out_buff;
+
 	/* open socket */
-	if ((sock_fd = open_socket(ifname)) < 0)
+	sock_fd = open_socket(ifname);
+	if (sock_fd < 0)
 		exit(EXIT_FAILURE);
 
 	/* get ethernet interface index */
-	if ((if_index = interface_index(sock_fd, ifname)) < 0)
+	if_index = interface_index(sock_fd, ifname);
+	if (if_index < 0)
 		exit(EXIT_FAILURE);
 
 	/* get ethernet interface address */
@@ -191,7 +228,7 @@ int main(int argc, char *argv[]) {
 	print_mac(dst_mac);
 
 	while (running) {
-		recv = recvfrom(sock_fd, buff, PACKET_SIZE, 0, NULL, NULL);
+		recv = recvfrom(sock_fd, buff, ETH_FRAME_LEN, 0, NULL, NULL);
 		if (recv <= 0)
 			break;
 
@@ -199,16 +236,13 @@ int main(int argc, char *argv[]) {
 		if (memcmp(eth_hdr->h_dest, dst_mac, ETH_ALEN) != 0)
 			continue;
 
-#ifdef FORCE_EXIT
-		if (memcmp(eth_hdr->h_source, "quit", 4) == 0)
-			break;
-#else
 		/* break on special packet */
-		if (memcmp(data_ptr, END_OF_STREAM, sizeof(END_OF_STREAM)) == 0) {
+		if (memcmp(data_ptr, END_OF_STREAM,
+			sizeof(END_OF_STREAM)) == 0) {
 			DBGOUT("server rcv EOS\n");
+			sending = 0;
 			break;
 		}
-#endif
 
 		/* record timestamp on first received packet */
 		if (server_result.packets == 0) {
@@ -216,6 +250,16 @@ int main(int argc, char *argv[]) {
 				exit(EXIT_FAILURE);
 			DBGOUT("connect from ");
 			print_mac(eth_hdr->h_source);
+
+			/* prepare ethernet header */
+			memcpy(out_hdr->h_dest, eth_hdr->h_source, ETH_ALEN);
+			memcpy(out_hdr->h_source, eth_hdr->h_dest, ETH_ALEN);
+			out_hdr->h_proto = htons(ETH_DATA_LEN);
+			/* prepare sockaddr */
+			memcpy(s_addr.sll_addr, eth_hdr->h_dest, ETH_ALEN);
+
+			pthread_create(&snd_thread, NULL,
+				send_packets_thread, &s_addr);
 		}
 
 		seq = ntohl(*(unsigned int *)data_ptr);
@@ -231,6 +275,10 @@ int main(int argc, char *argv[]) {
 		server_result.bytes += recv;
 	}
 
+	/* wait for the second thread to finish */
+	if (pthread_join(snd_thread, NULL))
+		DBGOUT("Error joining thread\n");
+
 	/* record timestamp */
 	if (gettimeofday(&end, 0) < 0)
 		exit(EXIT_FAILURE);
@@ -243,22 +291,24 @@ int main(int argc, char *argv[]) {
 	result->bytes = htonl(server_result.bytes);
 	result->duplicates = htonl(server_result.duplicates);
 
-#ifndef FORCE_EXIT
 	/* prepare header */
 	memcpy(eth_hdr->h_dest, eth_hdr->h_source, ETH_ALEN);
 	memcpy(eth_hdr->h_source, dst_mac, ETH_ALEN);
+	eth_hdr->h_proto = htons(sizeof(END_OF_STREAM)
+		+ sizeof(struct raw_result));
 
 	/* prepare sockaddr */
 	memcpy(s_addr.sll_addr, eth_hdr->h_dest, ETH_ALEN);
 
 	/* send server report */
-	for (i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++) {
 		sendto(sock_fd, buff,
 		       ETH_HLEN + sizeof(END_OF_STREAM) + sizeof(*result), 0,
 		       (struct sockaddr *)&s_addr, sizeof(s_addr));
+		usleep(100);
+	}
 
 	close_socket(sock_fd);
-#endif
 	free(buff);
 
 	/* prepare and print result */

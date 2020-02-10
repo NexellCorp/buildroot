@@ -18,16 +18,17 @@
 #include "rawsend.h"
 
 struct raw_result client_result;
-int sock_fd = 0;
-unsigned char *out_buff = NULL;
-unsigned char *in_buff = NULL;
+int sock_fd;
+unsigned char *out_buff;
+unsigned char *in_buff;
 unsigned char snd_mac[6];
 char *src_ifname;
 char *dst_ifname;
-long total_sent_packets = 0;
-long total_recv_packets = 0;
-long total_sent_bytes = 0;
-int running = 1, waiting = 1;
+long total_sent_packets;
+long total_recv_packets;
+long total_sent_bytes;
+int running, waiting;
+int success;
 
 void print_result(struct raw_result *result)
 {
@@ -63,7 +64,9 @@ void print_server_result(struct raw_result *result)
 int open_socket(const char *ifname)
 {
 	struct ifreq ifr;
-	int sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
+	int sock;
+
+	sock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		exit(EXIT_FAILURE);
 
@@ -126,41 +129,31 @@ int interface_addr(int sock, char *ifname, char *addr)
 	return EXIT_SUCCESS;
 }
 
-void *read_packets(void *ptr)
+void *recv_packets_thread(void *ptr)
 {
 	struct ethhdr *in_hdr;
 	char *addr = ptr;
-	int recv;
+	int i, recv;
 
-	in_buff = malloc(PACKET_SIZE);
 	in_hdr = (struct ethhdr *)in_buff;
 
 	while (waiting) {
-		recv = recvfrom(sock_fd, in_buff, PACKET_SIZE, 0, NULL, NULL);
+		recv = recvfrom(sock_fd, in_buff, ETH_FRAME_LEN,
+			MSG_DONTWAIT, NULL, NULL);
 		if (recv == -1)
-			break;
+			continue;
 
 		if (recv < sizeof(*in_hdr))
 			continue;
 
 		/* do not consider packets with wrong destination */
-		if (memcmp((const void*)in_hdr->h_dest, addr, ETH_ALEN) != 0)
+		if (memcmp((const void *)in_hdr->h_dest, addr, ETH_ALEN) != 0)
 			continue;
-
-		/* check if a result was received */
-		if (memcmp(in_buff + ETH_HLEN, END_OF_STREAM,
-			   sizeof(END_OF_STREAM)) == 0) {
-			print_server_result((struct raw_result *)
-					    (in_buff + ETH_HLEN
-					     + sizeof(END_OF_STREAM)));
-			break;
-		}
+		else
+			success++;
 	}
 
-	close_socket(sock_fd);
-	free(out_buff);
-	free(in_buff);
-	exit(EXIT_SUCCESS);
+	return NULL;
 }
 
 void sigint(int signum)
@@ -199,25 +192,37 @@ double timeval_subtract(struct timeval *result, struct timeval *t2,
 /* calc interval in microseconds */
 int calc_interval(int rate)
 {
-	return 1e6 * 8 / rate;
+	return 1e6 * 2 / rate;
 }
 
-int main(int argc, char *argv[]) {
-	pthread_t thread;
-	out_buff = (void*)malloc(PACKET_SIZE);
+int main(int argc, char *argv[])
+{
+	pthread_t rcv_thread;
+
+	out_buff = (void *)malloc(ETH_FRAME_LEN);
+	in_buff = (void *)malloc(ETH_FRAME_LEN);
 	unsigned char *data_ptr = out_buff + ETH_HLEN;
-	unsigned char src_addr[ETH_HLEN], dst_addr[ETH_HLEN];
+	unsigned char src_addr[ETH_ALEN], dst_addr[ETH_ALEN];
 	struct ethhdr *out_hdr = (struct ethhdr *)out_buff;
 	struct sockaddr_ll s_addr;
 	struct timeval begin, end, elapsed;
+	struct raw_result *svr_result = (struct raw_result *)
+		(in_buff + ETH_HLEN + sizeof(END_OF_STREAM));
 	double diff;
-	int i, sent, rate, interval, timeout = 0, src_idx, dst_idx;
+	int i, sent, recv, rate, interval, timeout = 0, src_idx, dst_idx;
 
-	if (argc < 4)
-	{
-		printf("Missing arguments.\n"
-		       "%s [src_ifname] [dest_ifname] [kbit/s] [seconds] \n",
-		       argv[0]);
+	sock_fd = 0;
+	total_sent_packets = 0;
+	total_recv_packets = 0;
+	total_sent_bytes = 0;
+	running = 1;
+	waiting = 1;
+	success = 0;
+
+	if (argc < 4) {
+		printf("Missing arguments.\n");
+		printf("%s [src_ifname] [dest_ifname] ");
+		printf("[kbit/s] [seconds]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -228,19 +233,27 @@ int main(int argc, char *argv[]) {
 	if (argc == 5)
 		timeout = atoi(argv[4]);
 
+	/* fill ethernet payload with some data */
+	memset(out_buff, 0, ETH_FRAME_LEN);
+	memset(in_buff, 0, ETH_FRAME_LEN);
+	memset(&client_result, 0, sizeof(client_result));
+
 	/* open raw socket */
-	if ((sock_fd = open_socket(src_ifname)) < 0)
+	sock_fd = open_socket(src_ifname);
+	if (sock_fd < 0)
 		exit(EXIT_FAILURE);
 
 	/* prepare source interface */
-	if ((src_idx = interface_index(sock_fd, src_ifname)) < 0)
+	src_idx = interface_index(sock_fd, src_ifname);
+	if (src_idx < 0)
 		exit(EXIT_FAILURE);
 
 	if (interface_addr(sock_fd, src_ifname, src_addr) < 0)
 		exit(EXIT_FAILURE);
 
 	/* prepare destination interface */
-	if ((dst_idx = interface_index(sock_fd, dst_ifname)) < 0)
+	dst_idx = interface_index(sock_fd, dst_ifname);
+	if (dst_idx < 0)
 		exit(EXIT_FAILURE);
 
 	if (interface_addr(sock_fd, dst_ifname, dst_addr) < 0)
@@ -253,7 +266,6 @@ int main(int argc, char *argv[]) {
 	s_addr.sll_ifindex  = src_idx;
 	s_addr.sll_halen    = ETH_ALEN;
 	memcpy(s_addr.sll_addr, dst_addr, ETH_ALEN);
-
 
 	/* bind to interface */
 	if (bind(sock_fd, (struct sockaddr *)&s_addr, sizeof(s_addr)) < 0)
@@ -269,15 +281,9 @@ int main(int argc, char *argv[]) {
 	/* prepare ethernet header */
 	memcpy(out_hdr->h_dest, dst_addr, ETH_ALEN);
 	memcpy(out_hdr->h_source, src_addr, ETH_ALEN);
+	out_hdr->h_proto = htons(ETH_DATA_LEN);
 
-	/* fill ethernet payload with some data */
-	for (i = 0; i < PACKET_SIZE - ETH_HLEN; i++)
-		data_ptr[i] = (unsigned char)(0);
-
-#ifndef FORCE_EXIT
-	pthread_create(&thread, NULL, read_packets, src_addr);
-#endif
-	DBGOUT("sending packets\n");
+	pthread_create(&rcv_thread, NULL, recv_packets_thread, src_addr);
 
 	/* record timestamp */
 	if (gettimeofday(&begin, 0) < 0)
@@ -288,14 +294,14 @@ int main(int argc, char *argv[]) {
 
 	while (running) {
 		*(int *)data_ptr = htonl(client_result.sequence++);
-		sent = sendto(sock_fd, out_buff, PACKET_SIZE, 0,
-			      (struct sockaddr *)&s_addr, sizeof(s_addr));
+
+		sent = sendto(sock_fd, out_buff, ETH_FRAME_LEN, 0,
+			(struct sockaddr *)&s_addr, sizeof(s_addr));
+
 		client_result.packets++;
 		client_result.bytes += sent;
 		usleep(interval);
 	}
-
-	DBGOUT("packets sent\n");
 
 	/* record timestamp */
 	if (gettimeofday(&end, 0) < 0)
@@ -309,25 +315,36 @@ int main(int argc, char *argv[]) {
 	print_result(&client_result);
 
 	/* send final packets */
-#ifdef FORCE_EXIT
-	memcpy(out_hdr->h_source, "quit", 4);
-#else
 	memcpy(data_ptr, END_OF_STREAM, sizeof(END_OF_STREAM));
-#endif
 	DBGOUT("client snd EOS\n");
 	for (i = 0; i < 10; i++)
 		sendto(sock_fd, out_buff, ETH_HLEN + sizeof(END_OF_STREAM), 0,
-		       (struct sockaddr *)&s_addr, sizeof(s_addr));
+			(struct sockaddr *)&s_addr, sizeof(s_addr));
 
-	/* wait 5 seconds for server result */
-#ifndef FORCE_EXIT
-	sleep(5);
+	/* wait 1 seconds for server result */
 	waiting = 0;
-#endif
+	sleep(1);
+
+	recvfrom(sock_fd, in_buff, ETH_DATA_LEN, MSG_DONTWAIT, NULL, NULL);
+
+	DBGOUT("server result :\n");
+	print_result((struct raw_result *)(data_ptr+sizeof(END_OF_STREAM)));
+
+	/* wait for the second thread to finish */
+	if (pthread_join(rcv_thread, NULL))
+		DBGOUT("Error joining thread\n");
+
 	close_socket(sock_fd);
 
 	free(out_buff);
 	free(in_buff);
 
-	return EXIT_SUCCESS;
+	printf("Ethernet loopback test : ");
+	if (success != 0) {
+		printf("Success!!! (%d)\n", success);
+		return EXIT_SUCCESS;
+	}
+
+	printf("FAILURE!!! (%d)\n", success);
+	return EXIT_FAILURE;
 }
