@@ -219,6 +219,8 @@ int main(int argc, char *argv[])
 	waiting = 1;
 	success = 0;
 
+	usleep(1000000);
+
 	if (argc < 4) {
 		printf("Missing arguments.\n");
 		printf("%s [src_ifname] [dest_ifname] ");
@@ -321,14 +323,18 @@ int main(int argc, char *argv[])
 		sendto(sock_fd, out_buff, ETH_HLEN + sizeof(END_OF_STREAM), 0,
 			(struct sockaddr *)&s_addr, sizeof(s_addr));
 
-	/* wait 1 seconds for server result */
 	waiting = 0;
-	sleep(1);
-
+	/* wait 1 seconds for server result */
+	/*
+	usleep(1500000);
+	waiting = 0;
+	usleep(1000000);
+	printf("ahn\n");
 	recvfrom(sock_fd, in_buff, ETH_DATA_LEN, MSG_DONTWAIT, NULL, NULL);
 
 	DBGOUT("server result :\n");
 	print_result((struct raw_result *)(data_ptr+sizeof(END_OF_STREAM)));
+	*/
 
 	/* wait for the second thread to finish */
 	if (pthread_join(rcv_thread, NULL))
@@ -340,7 +346,7 @@ int main(int argc, char *argv[])
 	free(in_buff);
 
 	printf("Ethernet loopback test : ");
-	if (success != 0) {
+	if (success >= 100) {
 		printf("Success!!! (%d)\n", success);
 		return EXIT_SUCCESS;
 	}

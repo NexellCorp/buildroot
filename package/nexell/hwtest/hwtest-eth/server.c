@@ -301,12 +301,14 @@ int main(int argc, char *argv[])
 	memcpy(s_addr.sll_addr, eth_hdr->h_dest, ETH_ALEN);
 
 	/* send server report */
+	/*
 	for (i = 0; i < 10; i++) {
 		sendto(sock_fd, buff,
 		       ETH_HLEN + sizeof(END_OF_STREAM) + sizeof(*result), 0,
 		       (struct sockaddr *)&s_addr, sizeof(s_addr));
 		usleep(100);
 	}
+	*/
 
 	close_socket(sock_fd);
 	free(buff);
@@ -317,5 +319,8 @@ int main(int argc, char *argv[])
 	DBGOUT("server report:\n");
 	print_result(&server_result);
 
-	return EXIT_SUCCESS;
+	if (result->packets >= 100) {
+		return EXIT_SUCCESS;
+	}
+	return EXIT_FAILURE;
 }
