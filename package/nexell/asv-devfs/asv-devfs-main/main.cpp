@@ -1094,6 +1094,14 @@ int main(int argc, char **argv)
 			break;
 		}
 
+		case ASVC_GET_CORE_HPM:
+		{
+			uint32_t hpm_c;
+			GetHPM_CORE( &hpm_c );
+			ASVMSG( fd, "SUCCESS : CORE HPM=%02x\n", hpm_c);
+			break;
+		}
+
 		case ASVC_GET_ECID:
 			ret = sys_uid_ecid(ecid, ARRAY_SIZE(ecid));
 			if(ret)
