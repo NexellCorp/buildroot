@@ -61,6 +61,7 @@ int sys_dev_sysbus_set_freq(uint32_t hz);
 
 int32_t GetHPM( uint32_t hpm[8] );
 int32_t GetHPM_CPU(uint32_t *hpm );
+int32_t GetHPM_CORE(uint32_t *hpm );
 
 
 #ifdef __cplusplus

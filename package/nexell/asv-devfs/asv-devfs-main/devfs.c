@@ -474,6 +474,7 @@ int sys_dev_sysbus_set_volt(uint32_t uVolt)
 
 
 #define	CPU_HPM_FILE_NAME	"/sys/devices/platform/cpu/cpu_hpm"
+#define	CORE_HPM_FILE_NAME	"/sys/devices/platform/cpu/core_hpm"
 #define CPU_HPM_TEST_CNT	50
 
 int32_t GetHPM_CPU(int32_t *hpm )
@@ -483,6 +484,23 @@ int32_t GetHPM_CPU(int32_t *hpm )
 	FILE *fp;
 	for (i=0; i<50; i++) {
 		fp = popen("cat /sys/devices/platform/cpu/cpu_hpm","r");
+		fread(buffer,1, 8, fp);
+		sum += strtoul(buffer, NULL, 16);
+		pclose(fp);
+	}
+	*hpm = sum/50;
+
+	printf(" HPM AVG : %x \n", *hpm);
+	return 0;
+}
+
+int32_t GetHPM_CORE(int32_t *hpm )
+{
+	int i, sum = 0;
+	char buffer[128] = {0, };
+	FILE *fp;
+	for (i=0; i<50; i++) {
+		fp = popen("cat /sys/devices/platform/cpu/core_hpm","r");
 		fread(buffer,1, 8, fp);
 		sum += strtoul(buffer, NULL, 16);
 		pclose(fp);
