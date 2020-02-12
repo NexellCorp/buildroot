@@ -26,14 +26,20 @@
 		"args"     : " -p 0 -l 1 -T 3",
 		"logofile" : "log_i2s.txt"
 	},
-
-	// "3": {
-	// 	"descript" : "ETHERNET",
-	// 	"thread"   : true,
-	// 	"path"	   : "/usr/bin",
-	// 	"command"  : "client",
-	// 	"args"     : " eth0 eth1 1000000 10",
-	// 	"logofile" : "log_i2s.txt"
-	// }
-
+	"3": {
+	 	"descript" : "ETHERNETS",
+	 	"thread"   : true,
+	 	"path"	   : "/usr/bin",
+	 	"command"  : "server",
+	 	"args"     : " eth1 &",
+	 	"logofile" : "log_server.txt"
+	 },
+	"4": {
+	 	"descript" : "ETHERNETC",
+	 	"thread"   : true,
+	 	"path"	   : "/usr/bin",
+	 	"command"  : "client",
+	 	"args"     : " eth0 eth1 1000000 5",
+	 	"logofile" : "log_client.txt"
+	 }
 }

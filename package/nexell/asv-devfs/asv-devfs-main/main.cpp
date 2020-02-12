@@ -895,7 +895,7 @@ static int setup_asv_task(OP_T *op)
 		return ret;
 	}
 
-#if 0
+#if 1
 	/*
 	 * Ethernet
 	 */
@@ -934,6 +934,16 @@ static int setup_asv_task(OP_T *op)
 	     /*	return ret; */
 	}
 	printf("ret.%d %s\n", ret, cmd);
+#if 0
+	cmd = "server eth1 &";
+	ret = system(cmd);
+	ret = (int)((char)WEXITSTATUS(ret));
+	if (ret) {
+		LogE("Error: system call '%s', ret:%d\n", cmd, ret);
+	     /*	return ret; */
+	}
+	printf("ret.%d %s\n", ret, cmd);
+#endif
 #endif
 
 	//	FIXME : Waiting usb mass storage mount functionality.

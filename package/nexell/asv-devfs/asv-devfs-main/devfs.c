@@ -414,6 +414,7 @@ int sys_dev_mm_set_volt(uint32_t uVolt)
 //
 #define ASV_MM_PLL0_RATE	"/sys/devices/platform/pll0_u_consumer/rate"
 #define ASV_MM_SYSBUS_RATE	"/sys/devices/platform/sys0_u_consumer/rate"
+#define ASV_MM_SYS_HSIFBUS_RATE	"/sys/devices/platform/sys0_h_u_consumer/rate"
 int sys_dev_sysbus_set_freq(uint32_t hz)
 {
 	char data[32] = { 0, };
@@ -451,6 +452,9 @@ int sys_dev_sysbus_set_freq(uint32_t hz)
 		return ret;
 
 	sprintf(data, "%ld", hz);
+	sys_write(ASV_MM_SYS_HSIFBUS_RATE, data, strlen(data));
+	if( 0 != ret )
+		return ret;
 	return sys_write(ASV_MM_SYSBUS_RATE, data, strlen(data));
 }
 
