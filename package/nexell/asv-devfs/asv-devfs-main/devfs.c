@@ -425,8 +425,10 @@ int sys_dev_sysbus_set_freq(uint32_t hz)
 	switch( hz )
 	{
 		case 100000000:
+		case 166666667:
 		case 200000000:
 		case 250000000:
+		case 333333334:
 		case 500000000:
 			pll0 = 1000000000;
 			break;
