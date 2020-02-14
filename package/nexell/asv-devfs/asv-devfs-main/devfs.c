@@ -421,6 +421,12 @@ int sys_dev_sysbus_set_freq(uint32_t hz)
 	int ret;
 	uint32_t pll0 = 0;
 
+	if(hz == 150000000)
+		hz = 166666667;
+
+	if(hz == 350000000)
+		hz = 333333334;
+
 	printf("sys_dev_sysbus_set_freq = %ld Hz\n", hz);
 	switch( hz )
 	{
