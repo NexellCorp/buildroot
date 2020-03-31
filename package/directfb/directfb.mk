@@ -172,6 +172,13 @@ HOST_DIRECTFB_CONF_OPTS = \
 	--with-gfxdrivers=none \
 	--with-inputdrivers=none
 
+define DIRECTFB_ADD_SOURCES
+	cp package/directfb/drmkms_dumb.c package/directfb/libdrm_macros.h \
+		$(@D)/systems/drmkms/
+endef
+
+DIRECTFB_POST_PATCH_HOOKS += DIRECTFB_ADD_SOURCES
+
 HOST_DIRECTFB_BUILD_CMDS = \
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/tools directfb-csource
 
