@@ -21,7 +21,8 @@ DIRECTFB_CONF_OPTS = \
 	--disable-osx \
 	--disable-video4linux \
 	--disable-video4linux2 \
-	--disable-x11
+	--disable-x11 \
+	--with-smooth-scaling
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DIRECTFB_CONF_OPTS += --disable-dynload
