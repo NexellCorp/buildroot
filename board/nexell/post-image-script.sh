@@ -22,10 +22,10 @@ if grep -Eq "^BR2_INIT_SYSTEMD=y$" ${BR2_CONFIG}; then
 	cp ${SKELETON_FS_DIR}/lib/systemd/system/serial-getty@.service \
 	   ${TARGET_DIR}/lib/systemd/system/serial-getty@.service
 
-	ln -s /lib/systemd/system/serial-getty@.service \
+	ln -sf /lib/systemd/system/serial-getty@.service \
 	     ${TARGET_DIR}/etc/systemd/system/getty.target.wants/serial-getty@ttyS2.service
 
 	# remove prompt login services
-	rm ${TARGET_DIR}/lib/systemd/system/console-getty.service
-	rm ${TARGET_DIR}/usr/lib/systemd/system/container-getty@.service
+	rm -f ${TARGET_DIR}/lib/systemd/system/console-getty.service
+	rm -f ${TARGET_DIR}/usr/lib/systemd/system/container-getty@.service
 fi
