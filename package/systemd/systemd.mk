@@ -41,7 +41,8 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
-	-Dnss-systemd=true
+	-Dnss-systemd=true \
+	-Dsysvrcnd-path=/etc
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_DEPENDENCIES += acl
